@@ -1,31 +1,20 @@
 ```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<title>FloodGuard AI | World Flood Monitor</title>
 
-<title>FloodGuard AI | Sri Lanka</title>
+<!-- Leaflet -->
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-
-<!-- Leaflet CSS -->
-
-<link
-rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
-
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-
-/* =========================================================
-   FLOODGUARD AI
-   COMPLETE CSS
-========================================================= */
 
 *{
     margin:0;
@@ -38,2496 +27,1901 @@ html{
 }
 
 body{
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background:#020617;
-
-    color:white;
-
+    font-family:Arial,Helvetica,sans-serif;
+    color:#fff;
+    background:
+        linear-gradient(rgba(2,6,23,.88),rgba(2,6,23,.97)),
+        url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2400&q=85");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
     overflow-x:hidden;
 }
 
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
-body::before{
-
+body:before{
     content:"";
-
     position:fixed;
-
     inset:0;
-
     pointer-events:none;
-
-    z-index:-10;
-
+    z-index:-1;
     background:
-
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(14,165,233,.12),
-            transparent 30%
-        ),
-
-        radial-gradient(
-            circle at 80% 60%,
-            rgba(99,102,241,.10),
-            transparent 30%
-        );
+        radial-gradient(circle at 15% 20%,rgba(14,165,233,.13),transparent 30%),
+        radial-gradient(circle at 85% 70%,rgba(99,102,241,.12),transparent 30%);
 }
 
-
-/* =========================================================
-   NAVBAR
-========================================================= */
+/* ================= NAV ================= */
 
 nav{
-
     position:fixed;
-
     top:0;
-
     left:0;
-
     width:100%;
-
     z-index:9999;
-
-    padding:
-        17px 7%;
-
+    padding:15px 5%;
     display:flex;
-
-    justify-content:space-between;
-
     align-items:center;
-
-    background:
-        rgba(2,6,23,.88);
-
-    backdrop-filter:
-        blur(15px);
-
-    border-bottom:
-        1px solid #1e293b;
+    justify-content:space-between;
+    background:rgba(2,6,23,.92);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid #1e293b;
 }
 
 .logo{
-
-    font-size:22px;
-
+    font-size:21px;
     font-weight:800;
-
-    letter-spacing:.5px;
 }
 
 .logo span{
-
     color:#38bdf8;
 }
 
 nav ul{
-
     display:flex;
-
     gap:25px;
-
     list-style:none;
 }
 
 nav a{
-
     color:#cbd5e1;
-
     text-decoration:none;
-
     font-size:14px;
-
-    transition:.3s;
 }
 
 nav a:hover{
-
     color:#38bdf8;
 }
 
+/* ================= HERO ================= */
+
+.hero{
+    min-height:100vh;
+    padding:150px 6% 80px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.hero-content{
+    max-width:1000px;
+}
+
+.badge{
+    display:inline-block;
+    padding:9px 17px;
+    border:1px solid #38bdf8;
+    border-radius:50px;
+    color:#7dd3fc;
+    background:rgba(56,189,248,.07);
+    font-size:12px;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:clamp(45px,8vw,88px);
+    line-height:1;
+    margin-bottom:25px;
+}
+
+.gradient{
+    background:linear-gradient(90deg,#38bdf8,#818cf8,#c084fc);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    max-width:820px;
+    margin:auto;
+    color:#94a3b8;
+    font-size:18px;
+    line-height:1.8;
+}
+
+.buttons{
+    margin-top:35px;
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:14px 22px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-4px);
+}
+
+.primary{
+    background:#38bdf8;
+    color:#00111c;
+}
+
+.secondary{
+    color:white;
+    border:1px solid #334155;
+    background:rgba(255,255,255,.04);
+}
+
+/* ================= SECTION ================= */
+
+section{
+    padding:100px 6%;
+}
+
+.title{
+    text-align:center;
+    margin-bottom:45px;
+}
+
+.title h2{
+    font-size:40px;
+    margin-bottom:12px;
+}
+
+.title p{
+    color:#94a3b8;
+    line-height:1.7;
+}
+
+/* ================= CARDS ================= */
+
+.cards{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.card{
+    padding:25px;
+    border-radius:18px;
+    background:rgba(15,23,42,.72);
+    border:1px solid #1e293b;
+    backdrop-filter:blur(14px);
+}
+
+.card:hover{
+    border-color:#38bdf8;
+}
+
+.icon{
+    font-size:32px;
+    margin-bottom:12px;
+}
+
+.card h3{
+    margin-bottom:7px;
+}
+
+.card p{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.value{
+    margin-top:14px;
+    font-size:26px;
+    font-weight:bold;
+    color:#7dd3fc;
+}
+
+/* ================= MAP ================= */
+
+.map-box{
+    max-width:1250px;
+    margin:auto;
+    padding:12px;
+    background:rgba(15,23,42,.75);
+    border:1px solid #164e63;
+    border-radius:22px;
+}
+
+#map{
+    width:100%;
+    height:600px;
+    border-radius:15px;
+}
+
+.map-tools{
+    max-width:1250px;
+    margin:20px auto;
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:18px;
+}
+
+.search-box,
+.selected-box{
+    padding:22px;
+    border-radius:17px;
+    background:rgba(15,23,42,.78);
+    border:1px solid #1e293b;
+}
+
+.search-box input{
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    border-radius:10px;
+    border:1px solid #334155;
+    outline:none;
+    background:#020617;
+    color:white;
+}
+
+.country-results{
+    max-height:220px;
+    overflow-y:auto;
+    margin-top:10px;
+}
+
+.country-item{
+    padding:11px;
+    border-bottom:1px solid #1e293b;
+    cursor:pointer;
+    color:#cbd5e1;
+}
+
+.country-item:hover{
+    background:#0f172a;
+    color:#38bdf8;
+}
+
+.selected-country{
+    font-size:25px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.risk{
+    font-size:28px;
+    font-weight:bold;
+    margin-top:12px;
+}
+
+.risk-low{
+    color:#22c55e;
+}
+
+.risk-medium{
+    color:#f59e0b;
+}
+
+.risk-high{
+    color:#ef4444;
+}
+
+/* ================= MONITOR ================= */
+
+.monitor{
+    max-width:1200px;
+    margin:auto;
+}
+
+.country-selector{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+}
+
+.country-selector select{
+    min-width:280px;
+    padding:15px;
+    border-radius:10px;
+    background:#020617;
+    color:white;
+    border:1px solid #334155;
+    font-size:15px;
+}
+
+.load-btn{
+    padding:15px 24px;
+    border:0;
+    border-radius:10px;
+    background:#38bdf8;
+    color:#00111c;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.load-btn:hover{
+    transform:translateY(-2px);
+}
+
+/* ================= LIVE STATUS ================= */
+
+.status{
+    text-align:center;
+    margin:20px auto;
+    max-width:700px;
+    padding:14px;
+    border-radius:12px;
+    background:rgba(15,23,42,.75);
+    border:1px solid #1e293b;
+    color:#94a3b8;
+}
+
+.status span{
+    color:#22c55e;
+    font-weight:bold;
+}
+
+/* ================= WEATHER GRID ================= */
+
+.weather-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.weather-card{
+    padding:25px;
+    border-radius:18px;
+    background:rgba(15,23,42,.78);
+    border:1px solid #1e293b;
+}
+
+.weather-card .big{
+    font-size:32px;
+    font-weight:bold;
+    color:#7dd3fc;
+    margin-top:10px;
+}
+
+.weather-card small{
+    color:#64748b;
+}
+
+/* ================= RISK ================= */
+
+.risk-panel{
+    max-width:850px;
+    margin:35px auto;
+    padding:35px;
+    text-align:center;
+    border-radius:22px;
+    background:linear-gradient(145deg,#0f172a,#082f49);
+    border:1px solid #164e63;
+}
+
+.risk-circle{
+    width:160px;
+    height:160px;
+    margin:20px auto;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#020617;
+    border:8px solid #22c55e;
+    font-size:34px;
+    font-weight:bold;
+}
+
+.risk-panel p{
+    color:#94a3b8;
+    max-width:700px;
+    margin:15px auto;
+    line-height:1.7;
+}
+
+.bar{
+    height:14px;
+    max-width:600px;
+    margin:20px auto;
+    background:#1e293b;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+#riskBar{
+    width:0%;
+    height:100%;
+    transition:1s;
+    border-radius:20px;
+    background:#22c55e;
+}
+
+/* ================= CHART ================= */
+
+.chart-box{
+    max-width:1200px;
+    margin:25px auto;
+    padding:25px;
+    border-radius:20px;
+    background:rgba(15,23,42,.78);
+    border:1px solid #1e293b;
+}
+
+.chart-container{
+    position:relative;
+    height:350px;
+}
+
+/* ================= FORECAST ================= */
+
+.forecast{
+    max-width:1200px;
+    margin:25px auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.forecast-card{
+    padding:25px;
+    border-radius:17px;
+    background:rgba(15,23,42,.78);
+    border:1px solid #1e293b;
+}
+
+.forecast-card h3{
+    color:#38bdf8;
+    margin-bottom:15px;
+}
+
+.forecast-value{
+    font-size:24px;
+    font-weight:bold;
+    color:#7dd3fc;
+}
+
+.forecast-card p{
+    margin-top:8px;
+    color:#94a3b8;
+}
+
+/* ================= NOTICE ================= */
+
+.notice{
+    max-width:1000px;
+    margin:35px auto;
+    padding:18px;
+    border-radius:13px;
+    border:1px solid #164e63;
+    background:rgba(8,47,73,.45);
+    color:#bae6fd;
+    line-height:1.6;
+    text-align:center;
+}
+
+/* ================= TECHNOLOGY ================= */
+
+.features{
+    max-width:1100px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.feature{
+    padding:28px;
+    border-radius:18px;
+    background:rgba(15,23,42,.68);
+    border:1px solid #1e293b;
+}
+
+.feature h3{
+    color:#38bdf8;
+    margin-bottom:10px;
+}
+
+.feature p{
+    color:#94a3b8;
+    line-height:1.8;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    padding:50px 6%;
+    text-align:center;
+    border-top:1px solid #1e293b;
+    color:#64748b;
+}
+
+footer strong{
+    color:#38bdf8;
+    font-size:21px;
+}
 
 .creator{
-    margin-top:12px;
-    font-size:18px;
+    margin-top:10px;
     color:#cbd5e1;
 }
 
 .creator span{
     color:#38bdf8;
-    font-weight:800;
-    text-shadow:
-        0 0 15px rgba(56,189,248,.6);
-}
-
-.footer-sub{
-    margin-top:10px;
-}
-
-.disclaimer{
-    margin-top:18px;
-    font-size:12px;
-    color:#64748b;
-}
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero{
-
-    min-height:100vh;
-
-    padding:
-        150px 7% 80px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    text-align:center;
-
-    background:
-
-        radial-gradient(
-            circle at center,
-            rgba(14,165,233,.15),
-            transparent 42%
-        );
-}
-
-.hero-content{
-
-    max-width:950px;
-}
-
-.badge{
-
-    display:inline-block;
-
-    padding:
-        9px 18px;
-
-    border:
-        1px solid #38bdf8;
-
-    border-radius:50px;
-
-    color:#7dd3fc;
-
-    background:
-        rgba(56,189,248,.06);
-
-    font-size:12px;
-
-    margin-bottom:25px;
-}
-
-.hero h1{
-
-    font-size:
-        clamp(48px,8vw,90px);
-
-    line-height:
-        1;
-
-    margin-bottom:25px;
-}
-
-.gradient{
-
-    background:
-        linear-gradient(
-            90deg,
-            #38bdf8,
-            #818cf8,
-            #c084fc
-        );
-
-    -webkit-background-clip:text;
-
-    color:transparent;
-}
-
-.hero p{
-
-    max-width:780px;
-
-    margin:auto;
-
-    color:#94a3b8;
-
-    font-size:18px;
-
-    line-height:1.8;
-}
-
-.hero-buttons{
-
-    margin-top:35px;
-
-    display:flex;
-
-    justify-content:center;
-
-    flex-wrap:wrap;
-
-    gap:12px;
-}
-
-.btn{
-
-    display:inline-block;
-
-    padding:
-        14px 23px;
-
-    border-radius:10px;
-
     font-weight:bold;
-
-    text-decoration:none;
-
-    transition:.3s;
 }
 
-.btn:hover{
+/* ================= LOADING ================= */
 
-    transform:
-        translateY(-4px);
+.loading{
+    color:#38bdf8;
+    animation:pulse 1s infinite;
 }
 
-.btn-primary{
-
-    background:#38bdf8;
-
-    color:#00111c;
+@keyframes pulse{
+    50%{
+        opacity:.4;
+    }
 }
 
-.btn-secondary{
+/* ================= MOBILE ================= */
 
-    color:white;
+@media(max-width:900px){
 
-    border:
-        1px solid #334155;
+    nav ul{
+        display:none;
+    }
 
-    background:
-        rgba(255,255,255,.03);
+    .cards,
+    .weather-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .map-tools{
+        grid-template-columns:1fr;
+    }
+
+    .forecast{
+        grid-template-columns:1fr;
+    }
+
+    .features{
+        grid-template-columns:1fr;
+    }
 }
 
+@media(max-width:600px){
+
+    section{
+        padding:75px 5%;
+    }
+
+    .cards,
+    .weather-grid{
+        grid-template-columns:1fr;
+    }
+
+    #map{
+        height:450px;
+    }
+
+    .hero h1{
+        font-size:48px;
+    }
+
+    .title h2{
+        font-size:31px;
+    }
+
+    .country-selector select{
+        width:100%;
+        min-width:0;
+    }
+
+    .load-btn{
+        width:100%;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= NAV ================= -->
+
+<nav>
+
+    <div class="logo">
+        🌍 <span>FloodGuard</span> AI
+    </div>
+
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#map-section">World Map</a></li>
+        <li><a href="#monitor">Live Data</a></li>
+        <li><a href="#technology">Technology</a></li>
+    </ul>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="badge">
+            🌍 WORLD FLOOD MONITOR • REAL WEATHER DATA • AI
+        </div>
+
+        <h1>
+            Monitor
+            <br>
+            <span class="gradient">Flood Risk Worldwide</span>
+        </h1>
+
+        <p>
+            FloodGuard AI is a student-built environmental
+            monitoring prototype combining live weather data,
+            rainfall analysis, satellite visualization and
+            an experimental flood-risk model.
+        </p>
+
+        <div class="buttons">
+
+            <a href="#monitor" class="btn primary">
+                🌧️ View Live Data
+            </a>
+
+            <a
+                href="https://worldview.earthdata.nasa.gov/"
+                target="_blank"
+                class="btn secondary"
+            >
+                🛰️ NASA Worldview
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="dashboard">
+
+    <div class="title">
+
+        <h2>🌍 Global Dashboard</h2>
+
+        <p>
+            Environmental monitoring using live weather information.
+        </p>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="icon">🌍</div>
+
+            <h3>Coverage</h3>
+
+            <p>Global locations</p>
+
+            <div class="value">WORLD</div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="icon">🌧️</div>
+
+            <h3>Rainfall</h3>
+
+            <p>Live weather API</p>
+
+            <div class="value">LIVE</div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="icon">🛰️</div>
+
+            <h3>Satellite</h3>
+
+            <p>NASA GIBS imagery</p>
+
+            <div class="value">READY</div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="icon">🤖</div>
+
+            <h3>Risk Model</h3>
+
+            <p>Experimental prototype</p>
+
+            <div class="value">AI DEMO</div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= WORLD MAP ================= -->
+
+<section id="map-section">
+
+    <div class="title">
+
+        <h2>🛰️ World Environmental Map</h2>
+
+        <p>
+            Select a country or explore the world map.
+        </p>
+
+    </div>
+
+    <div class="map-box">
+
+        <div id="map"></div>
+
+    </div>
+
+    <div class="map-tools">
+
+        <div class="search-box">
+
+            <h3>🔎 Search Country</h3>
+
+            <input
+                id="countrySearch"
+                placeholder="Type country name..."
+            >
+
+            <div
+                id="countryResults"
+                class="country-results"
+            ></div>
+
+        </div>
+
+        <div class="selected-box">
+
+            <h3>Selected Location</h3>
+
+            <div
+                id="selectedCountry"
+                class="selected-country"
+            >
+                🌍 World
+            </div>
+
+            <div
+                id="selectedRisk"
+                class="risk risk-low"
+            >
+                WAITING
+            </div>
+
+            <p
+                id="selectedText"
+                style="color:#94a3b8;margin-top:8px;"
+            >
+                Select a country to load live environmental data.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= LIVE MONITOR ================= -->
+
+<section id="monitor">
+
+    <div class="title">
+
+        <h2>🌧️ Live Country Monitor</h2>
+
+        <p>
+            Real weather data retrieved from Open-Meteo.
+        </p>
+
+    </div>
+
+    <div class="monitor">
+
+        <div class="country-selector">
+
+            <select id="countrySelect"></select>
+
+            <button
+                class="load-btn"
+                onclick="loadWeather()"
+            >
+                🔄 Load Live Data
+            </button>
+
+        </div>
+
+
+        <div class="status">
+
+            Status:
+            <span id="apiStatus">
+                Ready
+            </span>
+
+            <br>
+
+            Last updated:
+            <span id="lastUpdated">
+                --
+            </span>
+
+        </div>
+
+
+        <!-- WEATHER CARDS -->
+
+        <div class="weather-grid">
+
+            <div class="weather-card">
+
+                🌧️ Rain
+
+                <div
+                    id="currentRain"
+                    class="big"
+                >
+                    --
+                </div>
+
+                <small>
+                    Current precipitation
+                </small>
+
+            </div>
+
+
+            <div class="weather-card">
+
+                🌡️ Temperature
+
+                <div
+                    id="currentTemp"
+                    class="big"
+                >
+                    --
+                </div>
+
+                <small>
+                    2m temperature
+                </small>
+
+            </div>
+
+
+            <div class="weather-card">
+
+                💧 Humidity
+
+                <div
+                    id="currentHumidity"
+                    class="big"
+                >
+                    --
+                </div>
+
+                <small>
+                    Relative humidity
+                </small>
+
+            </div>
+
+
+            <div class="weather-card">
+
+                💨 Wind
+
+                <div
+                    id="currentWind"
+                    class="big"
+                >
+                    --
+                </div>
+
+                <small>
+                    10m wind speed
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- RISK PANEL -->
+
+        <div class="risk-panel">
+
+            <div style="font-size:45px;">
+                🌊
+            </div>
+
+            <h2 id="riskCountry">
+                Select Country
+            </h2>
+
+            <div
+                id="riskCircle"
+                class="risk-circle"
+            >
+                --
+            </div>
+
+            <h3 id="riskLevel">
+                Waiting for data
+            </h3>
+
+            <p id="riskInfo">
+
+                FloodGuard AI will calculate an
+                experimental rainfall-based risk score
+                after live data is loaded.
+
+            </p>
+
+            <div class="bar">
+
+                <div id="riskBar"></div>
+
+            </div>
+
+            <strong id="riskScore">
+                Risk score: --
+            </strong>
+
+        </div>
+
+
+        <!-- RAIN CHART -->
+
+        <div class="chart-box">
+
+            <h2>
+                📈 7-Day Rainfall
+            </h2>
+
+            <p
+                id="chartDescription"
+                style="color:#94a3b8;margin:8px 0 20px;"
+            >
+                Select a country to load rainfall data.
+            </p>
+
+            <div class="chart-container">
+
+                <canvas id="rainChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- 3 DAY FORECAST -->
+
+        <h2
+            style="
+            text-align:center;
+            margin:45px 0 20px;
+            "
+        >
+            🔮 3-Day Forecast
+        </h2>
+
+        <div
+            id="forecast"
+            class="forecast"
+        ></div>
+
+
+        <div class="notice">
+
+            ⚠️ <strong>Important:</strong>
+            FloodGuard AI uses real environmental/weather
+            data, but the flood-risk score is an experimental
+            student prototype. It is NOT an official flood
+            warning, emergency alert, or government forecast.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TECHNOLOGY ================= -->
+
+<section id="technology">
+
+    <div class="title">
+
+        <h2>🤖 FloodGuard AI Technology</h2>
+
+        <p>
+            How the system could evolve into a scientific
+            flood-monitoring platform.
+        </p>
+
+    </div>
+
+    <div class="features">
+
+        <div class="feature">
+
+            <h3>
+                01 — Live Weather Data
+            </h3>
+
+            <p>
+
+                The prototype retrieves current weather,
+                rainfall, humidity, temperature and wind
+                information using the Open-Meteo API.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <h3>
+                02 — Rainfall Analysis
+            </h3>
+
+            <p>
+
+                Daily precipitation values are visualized
+                using charts so users can identify periods
+                of heavier rainfall.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <h3>
+                03 — Flood Risk Model
+            </h3>
+
+            <p>
+
+                The current prototype calculates a simple
+                rainfall-based risk indicator. A future
+                scientific model could incorporate river
+                levels, elevation, soil moisture, drainage,
+                historical flood events and satellite data.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <h3>
+                04 — Satellite Observation
+            </h3>
+
+            <p>
+
+                NASA GIBS imagery can provide an additional
+                Earth-observation layer for visual analysis
+                of environmental conditions.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        <strong>
+            🌍 FloodGuard AI — World Flood Monitor
+        </strong>
+    </p>
+
+    <p class="creator">
+        Created by
+        <span>ANUHAS INEESHA</span>
+    </p>
+
+    <p style="margin-top:10px;">
+        Student Innovation Project • AI • Earth • Climate
+    </p>
+
+    <p style="margin-top:20px;font-size:12px;">
+
+        Weather data:
+        Open-Meteo
+
+        <br>
+
+        Satellite visualization:
+        NASA GIBS
+
+        <br><br>
+
+        Prototype only — not an official NASA product.
+
+    </p>
+
+</footer>
+
+
+<!-- ================= LEAFLET ================= -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+<script>
 
 /* =========================================================
-   SECTIONS
+   COUNTRY DATABASE
 ========================================================= */
 
-section{
+const countries = [
 
-    padding:
-        100px 7%;
+{
+    name:"Sri Lanka",
+    flag:"🇱🇰",
+    lat:7.8731,
+    lon:80.7718
+},
+
+{
+    name:"India",
+    flag:"🇮🇳",
+    lat:20.5937,
+    lon:78.9629
+},
+
+{
+    name:"United States",
+    flag:"🇺🇸",
+    lat:37.0902,
+    lon:-95.7129
+},
+
+{
+    name:"United Kingdom",
+    flag:"🇬🇧",
+    lat:55.3781,
+    lon:-3.4360
+},
+
+{
+    name:"China",
+    flag:"🇨🇳",
+    lat:35.8617,
+    lon:104.1954
+},
+
+{
+    name:"Japan",
+    flag:"🇯🇵",
+    lat:36.2048,
+    lon:138.2529
+},
+
+{
+    name:"Bangladesh",
+    flag:"🇧🇩",
+    lat:23.6850,
+    lon:90.3563
+},
+
+{
+    name:"Pakistan",
+    flag:"🇵🇰",
+    lat:30.3753,
+    lon:69.3451
+},
+
+{
+    name:"Nepal",
+    flag:"🇳🇵",
+    lat:28.3949,
+    lon:84.1240
+},
+
+{
+    name:"Indonesia",
+    flag:"🇮🇩",
+    lat:-0.7893,
+    lon:113.9213
+},
+
+{
+    name:"Philippines",
+    flag:"🇵🇭",
+    lat:12.8797,
+    lon:121.7740
+},
+
+{
+    name:"Thailand",
+    flag:"🇹🇭",
+    lat:15.8700,
+    lon:100.9925
+},
+
+{
+    name:"Malaysia",
+    flag:"🇲🇾",
+    lat:4.2105,
+    lon:101.9758
+},
+
+{
+    name:"Australia",
+    flag:"🇦🇺",
+    lat:-25.2744,
+    lon:133.7751
+},
+
+{
+    name:"New Zealand",
+    flag:"🇳🇿",
+    lat:-40.9006,
+    lon:174.8860
+},
+
+{
+    name:"Canada",
+    flag:"🇨🇦",
+    lat:56.1304,
+    lon:-106.3468
+},
+
+{
+    name:"Mexico",
+    flag:"🇲🇽",
+    lat:23.6345,
+    lon:-102.5528
+},
+
+{
+    name:"Brazil",
+    flag:"🇧🇷",
+    lat:-14.2350,
+    lon:-51.9253
+},
+
+{
+    name:"Argentina",
+    flag:"🇦🇷",
+    lat:-38.4161,
+    lon:-63.6167
+},
+
+{
+    name:"Colombia",
+    flag:"🇨🇴",
+    lat:4.5709,
+    lon:-74.2973
+},
+
+{
+    name:"France",
+    flag:"🇫🇷",
+    lat:46.2276,
+    lon:2.2137
+},
+
+{
+    name:"Germany",
+    flag:"🇩🇪",
+    lat:51.1657,
+    lon:10.4515
+},
+
+{
+    name:"Italy",
+    flag:"🇮🇹",
+    lat:41.8719,
+    lon:12.5674
+},
+
+{
+    name:"Spain",
+    flag:"🇪🇸",
+    lat:40.4637,
+    lon:-3.7492
+},
+
+{
+    name:"Netherlands",
+    flag:"🇳🇱",
+    lat:52.1326,
+    lon:5.2913
+},
+
+{
+    name:"Norway",
+    flag:"🇳🇴",
+    lat:60.4720,
+    lon:8.4689
+},
+
+{
+    name:"South Africa",
+    flag:"🇿🇦",
+    lat:-30.5595,
+    lon:22.9375
+},
+
+{
+    name:"Nigeria",
+    flag:"🇳🇬",
+    lat:9.0820,
+    lon:8.6753
+},
+
+{
+    name:"Kenya",
+    flag:"🇰🇪",
+    lat:-0.0236,
+    lon:37.9062
+},
+
+{
+    name:"Ethiopia",
+    flag:"🇪🇹",
+    lat:9.1450,
+    lon:40.4897
+},
+
+{
+    name:"Egypt",
+    flag:"🇪🇬",
+    lat:26.8206,
+    lon:30.8025
+},
+
+{
+    name:"Morocco",
+    flag:"🇲🇦",
+    lat:31.7917,
+    lon:-7.0926
+},
+
+{
+    name:"Türkiye",
+    flag:"🇹🇷",
+    lat:38.9637,
+    lon:35.2433
+},
+
+{
+    name:"Saudi Arabia",
+    flag:"🇸🇦",
+    lat:23.8859,
+    lon:45.0792
+},
+
+{
+    name:"United Arab Emirates",
+    flag:"🇦🇪",
+    lat:23.4241,
+    lon:53.8478
+},
+
+{
+    name:"Fiji",
+    flag:"🇫🇯",
+    lat:-17.7134,
+    lon:178.0650
 }
 
-.section-title{
-
-    text-align:center;
-
-    margin-bottom:45px;
-}
-
-.section-title h2{
-
-    font-size:42px;
-
-    margin-bottom:12px;
-}
-
-.section-title p{
-
-    color:#94a3b8;
-
-    line-height:1.7;
-}
-
-
-/* =========================================================
-   DASHBOARD CARDS
-========================================================= */
-
-.dashboard{
-
-    max-width:1150px;
-
-    margin:auto;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:20px;
-}
-
-.dashboard-card{
-
-    padding:30px;
-
-    border-radius:18px;
-
-    background:#0f172a;
-
-    border:
-        1px solid #1e293b;
-
-    transition:.3s;
-}
-
-.dashboard-card:hover{
-
-    transform:
-        translateY(-6px);
-
-    border-color:#38bdf8;
-}
-
-.dashboard-icon{
-
-    font-size:35px;
-
-    margin-bottom:15px;
-}
-
-.dashboard-card h3{
-
-    margin-bottom:8px;
-}
-
-.dashboard-card p{
-
-    color:#94a3b8;
-
-    line-height:1.6;
-}
-
-.dashboard-value{
-
-    margin-top:15px;
-
-    font-size:28px;
-
-    font-weight:bold;
-
-    color:#7dd3fc;
-}
-
-
-/* =========================================================
-   NASA STATUS
-========================================================= */
-
-.nasa-status{
-
-    max-width:1150px;
-
-    margin:
-        25px auto 0;
-
-    padding:
-        15px 20px;
-
-    text-align:center;
-
-    color:#7dd3fc;
-
-    background:#0f172a;
-
-    border:
-        1px solid #164e63;
-
-    border-radius:12px;
-}
+];
 
 
 /* =========================================================
    MAP
 ========================================================= */
 
-.map-wrapper{
-
-    max-width:1200px;
-
-    margin:auto;
-
-    padding:12px;
-
-    background:#0f172a;
-
-    border:
-        1px solid #164e63;
-
-    border-radius:22px;
-
-    box-shadow:
-        0 0 50px
-        rgba(14,165,233,.08);
-}
-
-#map{
-
-    width:100%;
-
-    height:600px;
-
-    border-radius:15px;
-}
-
-
-/* =========================================================
-   MAP INFORMATION
-========================================================= */
-
-.map-info{
-
-    max-width:1200px;
-
-    margin:
-        20px auto;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:15px;
-}
-
-.info-card{
-
-    padding:22px;
-
-    border-radius:15px;
-
-    background:#0f172a;
-
-    border:
-        1px solid #1e293b;
-}
-
-.info-card h3{
-
-    color:#7dd3fc;
-
-    margin-bottom:8px;
-}
-
-.info-card p{
-
-    color:#94a3b8;
-}
-
-.info-card strong{
-
-    display:block;
-
-    margin-top:10px;
-
-    font-size:23px;
-}
-
-
-/* =========================================================
-   NASA WORLDVIEW
-========================================================= */
-
-.nasa-panel{
-
-    max-width:1000px;
-
-    margin:
-        45px auto 0;
-
-    padding:30px;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:25px;
-
-    border-radius:22px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(14,165,233,.12),
-            rgba(99,102,241,.08)
-        );
-
-    border:
-        1px solid
-        rgba(56,189,248,.35);
-}
-
-.nasa-icon{
-
-    width:80px;
-
-    height:80px;
-
-    flex-shrink:0;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:42px;
-
-    border-radius:20px;
-
-    background:
-        rgba(56,189,248,.12);
-
-    border:
-        1px solid
-        rgba(56,189,248,.3);
-}
-
-.nasa-content{
-
-    flex:1;
-}
-
-.nasa-content h2{
-
-    font-size:28px;
-
-    margin-bottom:8px;
-}
-
-.nasa-content p{
-
-    color:#94a3b8;
-
-    line-height:1.6;
-
-    margin-bottom:18px;
-}
-
-.nasa-button{
-
-    display:inline-block;
-
-    padding:
-        13px 22px;
-
-    border-radius:10px;
-
-    background:#38bdf8;
-
-    color:#00111c;
-
-    font-weight:bold;
-
-    transition:.3s;
-}
-
-.nasa-button:hover{
-
-    transform:
-        translateY(-3px);
-
-    box-shadow:
-        0 10px 30px
-        rgba(56,189,248,.3);
-}
-
-
-/* =========================================================
-   FLOOD LEGEND
-========================================================= */
-
-.flood-legend{
-
-    padding:15px;
-
-    border-radius:12px;
-
-    background:
-        rgba(2,8,23,.94);
-
-    border:
-        1px solid #334155;
-
-    color:white;
-
-    line-height:2;
-
-    box-shadow:
-        0 5px 25px
-        rgba(0,0,0,.4);
-}
-
-.flood-legend h4{
-
-    color:#7dd3fc;
-
-    margin-bottom:5px;
-}
-
-.flood-legend span{
-
-    display:inline-block;
-
-    width:13px;
-
-    height:13px;
-
-    margin-right:7px;
-
-    border-radius:3px;
-}
-
-.legend-water{
-
-    background:#32d2f2;
-}
-
-.legend-recurring{
-
-    background:#ffff00;
-}
-
-.legend-flood{
-
-    background:#fa1e24;
-}
-
-
-/* =========================================================
-   DISTRICT SYSTEM
-========================================================= */
-
-.district-layout{
-
-    max-width:1150px;
-
-    margin:auto;
-
-    display:grid;
-
-    grid-template-columns:
-        1fr 1.2fr;
-
-    gap:25px;
-}
-
-.district-list{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:10px;
-
-    max-height:520px;
-
-    overflow-y:auto;
-
-    padding:5px;
-}
-
-.district-btn{
-
-    padding:14px;
-
-    border-radius:10px;
-
-    border:
-        1px solid #1e293b;
-
-    background:#0f172a;
-
-    color:#cbd5e1;
-
-    cursor:pointer;
-
-    font-size:14px;
-
-    transition:.25s;
-}
-
-.district-btn:hover{
-
-    color:#7dd3fc;
-
-    border-color:#38bdf8;
-
-    transform:
-        translateY(-2px);
-}
-
-.district-btn.active{
-
-    color:#7dd3fc;
-
-    border-color:#38bdf8;
-
-    background:
-        rgba(56,189,248,.10);
-}
-
-
-/* =========================================================
-   RISK PANEL
-========================================================= */
-
-.district-panel{
-
-    min-height:520px;
-
-    padding:40px;
-
-    border-radius:22px;
-
-    text-align:center;
-
-    background:
-        linear-gradient(
-            145deg,
-            #0f172a,
-            #082f49
-        );
-
-    border:
-        1px solid #164e63;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-}
-
-.selected-icon{
-
-    font-size:50px;
-
-    margin-bottom:12px;
-}
-
-#districtName{
-
-    font-size:34px;
-
-    margin-bottom:20px;
-}
-
-.risk-circle{
-
-    width:135px;
-
-    height:135px;
-
-    border-radius:50%;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:#020617;
-
-    border:
-        8px solid #22c55e;
-
-    font-size:30px;
-
-    font-weight:bold;
-
-    margin-bottom:18px;
-
-    transition:.5s;
-}
-
-#riskLevel{
-
-    font-size:25px;
-
-    margin-bottom:15px;
-}
-
-#districtInfo{
-
-    max-width:520px;
-
-    color:#94a3b8;
-
-    line-height:1.7;
-
-    margin-bottom:25px;
-}
-
-.risk-bar{
-
-    width:100%;
-
-    max-width:500px;
-
-    height:12px;
-
-    background:#1e293b;
-
-    border-radius:20px;
-
-    overflow:hidden;
-}
-
-#riskBar{
-
-    display:block;
-
-    width:0%;
-
-    height:100%;
-
-    background:#22c55e;
-
-    border-radius:20px;
-
-    transition:1s;
-}
-
-.data-note{
-
-    margin-top:20px;
-
-    color:#64748b;
-
-    font-size:12px;
-}
-
-
-/* =========================================================
-   TECHNOLOGY
-========================================================= */
-
-.features{
-
-    max-width:1150px;
-
-    margin:auto;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:20px;
-}
-
-.feature-card{
-
-    padding:30px;
-
-    border-radius:18px;
-
-    background:#0f172a;
-
-    border:
-        1px solid #1e293b;
-}
-
-.feature-card h3{
-
-    color:#38bdf8;
-
-    margin-bottom:12px;
-}
-
-.feature-card p{
-
-    color:#94a3b8;
-
-    line-height:1.8;
-}
-
-
-/* =========================================================
-   IMPACT
-========================================================= */
-
-.impact-grid{
-
-    max-width:1150px;
-
-    margin:auto;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:20px;
-}
-
-.impact-card{
-
-    padding:30px;
-
-    text-align:center;
-
-    border-radius:18px;
-
-    background:#0f172a;
-
-    border:
-        1px solid #1e293b;
-}
-
-.impact-icon{
-
-    font-size:40px;
-
-    margin-bottom:15px;
-}
-
-.impact-card p{
-
-    margin-top:10px;
-
-    color:#94a3b8;
-
-    line-height:1.7;
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-footer{
-
-    padding:
-        55px 7%;
-
-    text-align:center;
-
-    border-top:
-        1px solid #1e293b;
-
-    color:#64748b;
-}
-
-footer strong{
-
-    color:#38bdf8;
-
-    font-size:20px;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:850px){
-
-    nav ul{
-
-        display:none;
-    }
-
-    section{
-
-        padding:
-            80px 5%;
-    }
-
-    .dashboard,
-    .map-info,
-    .features,
-    .impact-grid{
-
-        grid-template-columns:1fr;
-    }
-
-    .district-layout{
-
-        grid-template-columns:1fr;
-    }
-
-    .district-list{
-
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-    .nasa-panel{
-
-        flex-direction:column;
-
-        text-align:center;
-    }
-
-    #map{
-
-        height:450px;
-    }
-
-}
-
-@media(max-width:500px){
-
-    .district-list{
-
-        grid-template-columns:1fr;
-    }
-
-    .hero h1{
-
-        font-size:48px;
-    }
-
-    .section-title h2{
-
-        font-size:32px;
-    }
-
-}
-/* =====================================================
-   SPACE + EARTH BACKGROUND
-===================================================== */
-
-body{
-    background:
-        linear-gradient(
-            rgba(2,6,23,.72),
-            rgba(2,6,23,.88)
-        ),
-        url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2400&q=85");
-
-    background-size:cover;
-    background-position:center;
-    background-attachment:fixed;
-}
-
-
-/* Moving blue atmospheric glow */
-
-body::after{
-
-    content:"";
-
-    position:fixed;
-
-    inset:0;
-
-    pointer-events:none;
-
-    z-index:-2;
-
-    background:
-
-        radial-gradient(
-            circle at 50% 110%,
-            rgba(14,165,233,.35),
-            transparent 35%
-        ),
-
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(56,189,248,.10),
-            transparent 30%
-        );
-
-    animation:
-        atmosphere 8s ease-in-out infinite alternate;
-}
-
-
-@keyframes atmosphere{
-
-    from{
-        opacity:.65;
-    }
-
-    to{
-        opacity:1;
-    }
-
-}
-
-
-/* =====================================================
-   HERO EARTH GLOW
-===================================================== */
-
-.hero{
-
-    position:relative;
-
-    overflow:hidden;
-
-    background:
-        linear-gradient(
-            rgba(2,6,23,.30),
-            rgba(2,6,23,.65)
-        );
-}
-
-
-/* Big Earth-like glow */
-
-.hero::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:650px;
-
-    height:650px;
-
-    right:-250px;
-
-    bottom:-350px;
-
-    border-radius:50%;
-
-    background:
-
-        radial-gradient(
-            circle at 35% 30%,
-            #38bdf8 0%,
-            #0369a1 18%,
-            #082f49 45%,
-            #020617 70%
-        );
-
-    box-shadow:
-
-        0 -10px 100px
-        rgba(56,189,248,.45);
-
-    opacity:.75;
-
-    z-index:0;
-}
-
-
-.hero-content{
-
-    position:relative;
-
-    z-index:2;
-}
-
-
-/* =====================================================
-   GLASS EFFECT
-===================================================== */
-
-.dashboard-card,
-.info-card,
-.feature-card,
-.impact-card,
-.district-panel,
-.nasa-panel,
-.nasa-status{
-
-    background:
-        rgba(15,23,42,.62);
-
-    backdrop-filter:
-        blur(14px);
-
-    -webkit-backdrop-filter:
-        blur(14px);
-
-}
-
-
-/* =====================================================
-   SPACE PARTICLES
-===================================================== */
-
-.space-particles{
-
-    position:fixed;
-
-    inset:0;
-
-    pointer-events:none;
-
-    z-index:-1;
-
-    background-image:
-
-        radial-gradient(
-            2px 2px at 10% 20%,
-            white,
-            transparent
-        ),
-
-        radial-gradient(
-            1px 1px at 30% 70%,
-            white,
-            transparent
-        ),
-
-        radial-gradient(
-            2px 2px at 55% 30%,
-            #7dd3fc,
-            transparent
-        ),
-
-        radial-gradient(
-            1px 1px at 80% 15%,
-            white,
-            transparent
-        ),
-
-        radial-gradient(
-            2px 2px at 90% 70%,
-            #38bdf8,
-            transparent
-        ),
-
-        radial-gradient(
-            1px 1px at 65% 85%,
-            white,
-            transparent
-        );
-
-    background-size:
-        700px 500px;
-
-    animation:
-        particles 35s linear infinite;
-}
-
-
-@keyframes particles{
-
-    from{
-        transform:translateY(0);
-    }
-
-    to{
-        transform:translateY(300px);
-    }
-
-}
-
-
-/* =====================================================
-   NASA BADGE GLOW
-===================================================== */
-
-.badge{
-
-    box-shadow:
-        0 0 25px
-        rgba(56,189,248,.12);
-}
-
-
-/* =====================================================
-   BUTTON GLOW
-===================================================== */
-
-.btn-primary{
-
-    box-shadow:
-        0 0 25px
-        rgba(56,189,248,.20);
-}
-
-
-/* =====================================================
-   SECTION SEPARATION
-===================================================== */
-
-section{
-
-    position:relative;
-}
-
-
-section::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:10%;
-
-    right:10%;
-
-    bottom:0;
-
-    height:1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(56,189,248,.25),
-            transparent
-        );
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-<div class="space-particles"></div>
-<!-- =====================================================
-     NAVIGATION
-===================================================== -->
-
-<nav>
-
-    <div class="logo">
-
-        🚀
-        <span>FloodGuard</span>
-        AI
-
-    </div>
-
-
-    <ul>
-
-        <li>
-            <a href="#home">
-                Home
-            </a>
-        </li>
-
-        <li>
-            <a href="#dashboard">
-                Dashboard
-            </a>
-        </li>
-
-        <li>
-            <a href="#satellite">
-                Satellite
-            </a>
-        </li>
-
-        <li>
-            <a href="#districts">
-                Districts
-            </a>
-        </li>
-
-        <li>
-            <a href="#technology">
-                Technology
-            </a>
-        </li>
-
-    </ul>
-
-</nav>
-
-
-<!-- =====================================================
-     HERO
-===================================================== -->
-
-<section
-    class="hero"
-    id="home"
->
-
-    <div class="hero-content">
-
-        <div class="badge">
-
-            NASA EARTH OBSERVATION
-            •
-            AI
-            •
-            CLIMATE
-
-        </div>
-
-
-        <h1>
-
-            Protecting Sri Lanka
-
-            <br>
-
-            with
-
-            <span class="gradient">
-                Earth Data
-            </span>
-
-        </h1>
-
-
-        <p>
-
-            FloodGuard AI is a student-built prototype
-            exploring how Earth observation data,
-            environmental information and artificial
-            intelligence can support flood-risk awareness.
-
-        </p>
-
-
-        <div class="hero-buttons">
-
-            <a
-                href="#dashboard"
-                class="btn btn-primary"
-            >
-
-                Explore Dashboard
-
-            </a>
-
-
-            <a
-                href="#satellite"
-                class="btn btn-secondary"
-            >
-
-                🛰️ Satellite Data
-
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     DASHBOARD
-===================================================== -->
-
-<section
-    id="dashboard"
->
-
-    <div class="section-title">
-
-        <h2>
-            🌍 Earth Monitoring Dashboard
-        </h2>
-
-        <p>
-            Prototype environmental monitoring interface
-        </p>
-
-    </div>
-
-
-    <div class="dashboard">
-
-
-        <div class="dashboard-card">
-
-            <div class="dashboard-icon">
-                🌧️
-            </div>
-
-            <h3>
-                Rainfall
-            </h3>
-
-            <p>
-                Demonstration rainfall indicator
-            </p>
-
-            <div
-                class="dashboard-value"
-                id="rainfallValue"
-            >
-                42 mm
-            </div>
-
-        </div>
-
-
-        <div class="dashboard-card">
-
-            <div class="dashboard-icon">
-                🌊
-            </div>
-
-            <h3>
-                Flood Risk
-            </h3>
-
-            <p>
-                Prototype overall risk level
-            </p>
-
-            <div
-                class="dashboard-value"
-                id="overallRisk"
-            >
-                LOW
-            </div>
-
-        </div>
-
-
-        <div class="dashboard-card">
-
-            <div class="dashboard-icon">
-                🛰️
-            </div>
-
-            <h3>
-                NASA Earth Data
-            </h3>
-
-            <p>
-                Earth observation map layer
-            </p>
-
-            <div class="dashboard-value">
-                READY
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div
-        class="nasa-status"
-        id="nasaStatus"
-    >
-
-        🛰️ NASA Earth Data map ready
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     SATELLITE MAP
-===================================================== -->
-
-<section
-    id="satellite"
->
-
-    <div class="section-title">
-
-        <h2>
-            🛰️ NASA Satellite View
-        </h2>
-
-        <p>
-            Sri Lanka Earth observation visualization
-        </p>
-
-    </div>
-
-
-    <div class="map-wrapper">
-
-        <div id="map"></div>
-
-    </div>
-
-
-    <div class="map-info">
-
-
-        <div class="info-card">
-
-            <h3>
-                Location
-            </h3>
-
-            <p>
-                Sri Lanka
-            </p>
-
-            <strong>
-                🇱🇰
-            </strong>
-
-        </div>
-
-
-        <div class="info-card">
-
-            <h3>
-                Satellite Layer
-            </h3>
-
-            <p>
-                NASA GIBS
-            </p>
-
-            <strong>
-                🛰️ ACTIVE
-            </strong>
-
-        </div>
-
-
-        <div class="info-card">
-
-            <h3>
-                Monitoring
-            </h3>
-
-            <p>
-                Earth environment
-            </p>
-
-            <strong>
-                🌍
-            </strong>
-
-        </div>
-
-    </div>
-
-
-    <!-- NASA WORLDVIEW -->
-
-    <div class="nasa-panel">
-
-        <div class="nasa-icon">
-            🛰️
-        </div>
-
-
-        <div class="nasa-content">
-
-            <h2>
-                NASA Earth Observation
-            </h2>
-
-            <p>
-
-                Explore satellite imagery and Earth
-                observation data using NASA Worldview.
-
-            </p>
-
-
-            <a
-                href="https://worldview.earthdata.nasa.gov/?v=58.23938102453384,-27.587229055289363,234.17039100219927,84.94676658472122&t=2026-08-11-T05%3A10%3A35Z"
-                target="_blank"
-                class="nasa-button"
-            >
-
-                🛰️ Open NASA Worldview
-
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     DISTRICTS
-===================================================== -->
-
-<section
-    id="districts"
->
-
-    <div class="section-title">
-
-        <h2>
-            🇱🇰 Sri Lanka Flood Risk Monitor
-        </h2>
-
-        <p>
-
-            Select a district to explore
-            the prototype risk assessment.
-
-        </p>
-
-    </div>
-
-
-    <div class="district-layout">
-
-
-        <div
-            class="district-list"
-            id="districtList"
-        ></div>
-
-
-        <div class="district-panel">
-
-            <div class="selected-icon">
-                🌍
-            </div>
-
-
-            <h2 id="districtName">
-
-                Select a District
-
-            </h2>
-
-
-            <div
-                class="risk-circle"
-                id="riskCircle"
-            >
-
-                --
-
-            </div>
-
-
-            <h3 id="riskLevel">
-
-                Waiting for selection
-
-            </h3>
-
-
-            <p id="districtInfo">
-
-                Select a district from the list
-                to view its prototype flood-risk
-                assessment.
-
-            </p>
-
-
-            <div class="risk-bar">
-
-                <span
-                    id="riskBar"
-                ></span>
-
-            </div>
-
-
-            <p class="data-note">
-
-                Prototype assessment —
-                not an official emergency warning.
-
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     TECHNOLOGY
-===================================================== -->
-
-<section
-    id="technology"
->
-
-    <div class="section-title">
-
-        <h2>
-            🤖 How FloodGuard AI Works
-        </h2>
-
-        <p>
-            From Earth observation to community awareness
-        </p>
-
-    </div>
-
-
-    <div class="features">
-
-
-        <div class="feature-card">
-
-            <h3>
-                01 — NASA Earth Observation
-            </h3>
-
-            <p>
-
-                Earth observation imagery can help
-                visualize environmental conditions,
-                water and land changes.
-
-            </p>
-
-        </div>
-
-
-        <div class="feature-card">
-
-            <h3>
-                02 — Environmental Data
-            </h3>
-
-            <p>
-
-                Rainfall, water and weather information
-                can be combined to identify areas
-                requiring further attention.
-
-            </p>
-
-        </div>
-
-
-        <div class="feature-card">
-
-            <h3>
-                03 — AI Risk Model
-            </h3>
-
-            <p>
-
-                A future machine-learning model could
-                combine multiple environmental variables
-                to calculate a risk score.
-
-            </p>
-
-        </div>
-
-
-        <div class="feature-card">
-
-            <h3>
-                04 — Community Awareness
-            </h3>
-
-            <p>
-
-                The system could present complex
-                environmental information in a simple
-                format for communities.
-
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     IMPACT
-===================================================== -->
-
-<section>
-
-    <div class="section-title">
-
-        <h2>
-            🌎 Project Impact
-        </h2>
-
-        <p>
-            Technology for people and the planet
-        </p>
-
-    </div>
-
-
-    <div class="impact-grid">
-
-
-        <div class="impact-card">
-
-            <div class="impact-icon">
-                👨‍👩‍👧‍👦
-            </div>
-
-            <h3>
-                People
-            </h3>
-
-            <p>
-
-                Make environmental information
-                easier to understand.
-
-            </p>
-
-        </div>
-
-
-        <div class="impact-card">
-
-            <div class="impact-icon">
-                🌍
-            </div>
-
-            <h3>
-                Planet
-            </h3>
-
-            <p>
-
-                Use Earth observation technology
-                to understand our planet.
-
-            </p>
-
-        </div>
-
-
-        <div class="impact-card">
-
-            <div class="impact-icon">
-                🤖
-            </div>
-
-            <h3>
-                Innovation
-            </h3>
-
-            <p>
-
-                Combine AI, Earth science and
-                web technology.
-
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
-<footer>
-
-    <p>
-
-        <strong>
-            FloodGuard AI
-        </strong>
-
-    </p>
-
-
-    <p style="margin-top:10px;">
-
-        Student Innovation Project
-        •
-        Earth
-        •
-        AI
-        •
-        Climate
-
-    </p>
-
-
-    <p
-        style="
-            margin-top:20px;
-            font-size:13px;
-        "
-    >
-
-        Prototype only —
-        not an official NASA product
-        or emergency warning system.
-
-    </p>
-
-</footer>
-
-<footer>
-
-    <p>
-        <strong>FloodGuard AI</strong>
-    </p>
-
-    <p class="creator">
-        Created by <span>ANUHAS INEESHA</span>
-    </p>
-
-    <p class="footer-sub">
-        Student Innovation Project • Earth • AI • Climate
-    </p>
-
-    <p class="disclaimer">
-        Prototype only — not an official NASA product
-        or emergency warning system.
-    </p>
-
-</footer>
-
-
-<!-- =====================================================
-     LEAFLET JS
-===================================================== -->
-
-<script
-src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-</script>
-
-
-<script>
-
-/* =========================================================
-   NASA MAP
-========================================================= */
-
-
-/* Sri Lanka center */
-
-const sriLanka = [
-    7.8731,
-    80.7718
-];
-
-
-/* Create map */
-
 const map =
-    L.map("map")
-     .setView(
-         sriLanka,
-         7
-     );
+L.map("map").setView([20,0],2);
 
-
-/* OpenStreetMap */
 
 const osm =
-    L.tileLayer(
-
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-
-        {
-
-            attribution:
-                "© OpenStreetMap contributors",
-
-            opacity:
-                0.35
-
-        }
-
-    )
-    .addTo(map);
-
-
-/* Current date */
-
-const today =
-    new Date()
-        .toISOString()
-        .slice(0,10);
-
-
-/* NASA satellite layer */
-
-const nasaSatellite =
-    L.tileLayer(
-
-        "https://gibs.earthdata.nasa.gov/" +
-        "wmts/epsg3857/best/" +
-        "MODIS_Aqua_CorrectedReflectance_TrueColor/" +
-        "default/{time}/" +
-        "GoogleMapsCompatible_Level9/" +
-        "{z}/{y}/{x}.jpg",
-
-        {
-
-            time:
-                today,
-
-            attribution:
-                "NASA GIBS / NASA Earth Science Data",
-
-            maxZoom:
-                9
-
-        }
-
-    );
-
-
-/* NASA flood layer */
-
-const nasaFlood =
-    L.tileLayer(
-
-        "https://gibs.earthdata.nasa.gov/" +
-        "wmts/epsg3857/best/" +
-        "MODIS_NRT_Global_Flood_2Day/" +
-        "default/{time}/" +
-        "GoogleMapsCompatible_Level8/" +
-        "{z}/{y}/{x}.png",
-
-        {
-
-            time:
-                today,
-
-            attribution:
-                "NASA GIBS / NASA Earth Science Data",
-
-            maxZoom:
-                8,
-
-            opacity:
-                0.75
-
-        }
-
-    );
-
-
-/* Sri Lanka marker */
-
-L.marker(sriLanka)
-
-    .addTo(map)
-
-    .bindPopup(
-
-        "<b>🇱🇰 Sri Lanka</b><br>" +
-
-        "FloodGuard AI monitoring area."
-
-    );
-
-
-/* Layer controls */
-
-const baseLayers = {
-
-    "🗺️ Reference Map":
-        osm,
-
-    "🛰️ NASA Satellite":
-        nasaSatellite
-
-};
-
-
-const overlays = {
-
-    "🌊 NASA Flood Layer":
-        nasaFlood
-
-};
-
-
-L.control.layers(
-    baseLayers,
-    overlays
+L.tileLayer(
+"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+    attribution:"© OpenStreetMap contributors",
+    opacity:.35
+}
 ).addTo(map);
 
 
-/* =========================================================
-   FLOOD LEGEND
-========================================================= */
-
-const legend =
-    L.control({
-
-        position:
-            "bottomright"
-
-    });
+const today =
+new Date().toISOString().slice(0,10);
 
 
-legend.onAdd =
-function(){
+const nasaSatellite =
+L.tileLayer(
 
-    const div =
-        L.DomUtil.create(
-            "div",
-            "flood-legend"
-        );
+"https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/" +
+"MODIS_Terra_CorrectedReflectance_TrueColor/" +
+"default/{time}/GoogleMapsCompatible_Level9/" +
+"{z}/{y}/{x}.jpg",
 
+{
+    time:today,
+    attribution:"NASA GIBS",
+    maxZoom:9
+}
 
-    div.innerHTML = `
-
-        <h4>
-            NASA Flood Data
-        </h4>
-
-        <div>
-
-            <span
-                class="legend-water">
-            </span>
-
-            Surface Water
-
-        </div>
+);
 
 
-        <div>
+L.control.layers({
 
-            <span
-                class="legend-recurring">
-            </span>
+    "🗺️ Reference Map":osm,
 
-            Recurring Flood
+    "🛰️ NASA Satellite":nasaSatellite
 
-        </div>
-
-
-        <div>
-
-            <span
-                class="legend-flood">
-            </span>
-
-            Flood
-
-        </div>
-
-    `;
-
-
-    return div;
-
-};
-
-
-legend.addTo(map);
-
-
-/* Status */
-
-document.getElementById(
-    "nasaStatus"
-).textContent =
-    "🛰️ NASA Earth observation map ready";
+}).addTo(map);
 
 
 /* =========================================================
-   DISTRICT DATA
+   COUNTRY MARKERS
 ========================================================= */
 
+countries.forEach(country => {
 
-/*
-   DEMO VALUES ONLY.
-
-   These values are NOT actual NASA
-   flood predictions.
-*/
-
-const districts = [
-
-    ["Colombo",22],
-    ["Gampaha",35],
-    ["Kalutara",42],
-
-    ["Kandy",31],
-    ["Matale",28],
-    ["Nuwara Eliya",24],
-
-    ["Galle",46],
-    ["Matara",51],
-    ["Hambantota",29],
-
-    ["Jaffna",18],
-    ["Kilinochchi",25],
-    ["Mannar",20],
-    ["Mullaitivu",27],
-    ["Vavuniya",23],
-
-    ["Batticaloa",48],
-    ["Ampara",39],
-    ["Trincomalee",34],
-
-    ["Kurunegala",37],
-    ["Puttalam",44],
-
-    ["Anuradhapura",26],
-    ["Polonnaruwa",33],
-
-    ["Badulla",30],
-    ["Monaragala",21],
-
-    ["Ratnapura",62],
-    ["Kegalle",57]
-
-];
+    const marker =
+    L.circleMarker(
+        [country.lat,country.lon],
+        {
+            radius:7,
+            color:"#38bdf8",
+            fillColor:"#38bdf8",
+            fillOpacity:.8
+        }
+    ).addTo(map);
 
 
-/* District list */
-
-const districtList =
-    document.getElementById(
-        "districtList"
+    marker.bindPopup(
+        `<b>${country.flag} ${country.name}</b><br>
+        Click Live Data to load weather.`
     );
 
 
-/* Generate district buttons */
-
-districts.forEach(
-function(district){
-
-    const button =
-        document.createElement(
-            "button"
-        );
-
-
-    button.className =
-        "district-btn";
-
-
-    button.textContent =
-        "🇱🇰 " +
-        district[0];
-
-
-    button.onclick =
-        function(){
-
-            showDistrict(
-                district[0],
-                district[1],
-                button
-            );
-
-        };
-
-
-    districtList.appendChild(
-        button
-    );
+    country.marker = marker;
 
 });
 
 
 /* =========================================================
-   DISTRICT RISK
+   COUNTRY SELECT
 ========================================================= */
 
-function showDistrict(
-    name,
-    score,
-    button
-){
+const select =
+document.getElementById("countrySelect");
 
-    /* Remove old active buttons */
 
-    document
-        .querySelectorAll(
-            ".district-btn"
-        )
-        .forEach(
-            function(item){
+countries.forEach((country,index)=>{
 
-                item.classList
-                    .remove("active");
+    const option =
+    document.createElement("option");
 
-            }
+    option.value=index;
+
+    option.textContent =
+        country.flag + " " + country.name;
+
+    select.appendChild(option);
+
+});
+
+
+/* =========================================================
+   COUNTRY SEARCH
+========================================================= */
+
+const search =
+document.getElementById("countrySearch");
+
+const results =
+document.getElementById("countryResults");
+
+
+function renderSearch(query=""){
+
+    results.innerHTML="";
+
+    countries
+    .filter(country =>
+        country.name
+        .toLowerCase()
+        .includes(query.toLowerCase())
+    )
+    .forEach(country=>{
+
+        const item =
+        document.createElement("div");
+
+        item.className =
+        "country-item";
+
+        item.textContent =
+            country.flag + " " + country.name;
+
+
+        item.onclick=()=>{
+
+            const index =
+            countries.indexOf(country);
+
+            select.value=index;
+
+            map.flyTo(
+                [country.lat,country.lon],
+                4,
+                {duration:1.2}
+            );
+
+            country.marker.openPopup();
+
+            results.innerHTML="";
+
+            search.value =
+                country.name;
+
+            loadWeather();
+
+        };
+
+
+        results.appendChild(item);
+
+    });
+
+}
+
+
+renderSearch();
+
+
+search.addEventListener(
+    "input",
+    e=>renderSearch(e.target.value)
+);
+
+
+/* =========================================================
+   WEATHER CHART
+========================================================= */
+
+let rainChart = null;
+
+
+/* =========================================================
+   LOAD WEATHER
+========================================================= */
+
+async function loadWeather(){
+
+    const country =
+    countries[
+        Number(select.value)
+    ];
+
+
+    const status =
+    document.getElementById("apiStatus");
+
+
+    status.textContent =
+        "Loading...";
+
+    status.className =
+        "loading";
+
+
+    const url =
+    "https://api.open-meteo.com/v1/forecast" +
+
+    "?latitude=" + country.lat +
+
+    "&longitude=" + country.lon +
+
+    "&current=" +
+    "temperature_2m," +
+   "relative_humidity_2m," +
+    "precipitation," +
+    "rain," +
+    "wind_speed_10m," +
+    "weather_code" +
+
+    "&daily=" +
+    "rain_sum," +
+    "temperature_2m_max," +
+    "temperature_2m_min," +
+    "precipitation_probability_max" +
+
+    "&forecast_days=7" +
+
+    "&timezone=auto";
+
+
+    try{
+
+        const response =
+        await fetch(url);
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "API request failed"
+            );
+
+        }
+
+
+        const data =
+        await response.json();
+
+
+        updateWeather(
+            country,
+            data
         );
 
 
-    button
-        .classList
-        .add("active");
+        status.textContent =
+            "LIVE DATA";
+
+        status.className="";
 
 
-    const districtName =
         document.getElementById(
-            "districtName"
-        );
+            "lastUpdated"
+        ).textContent =
+            new Date().toLocaleString();
 
 
-    const riskCircle =
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        status.textContent =
+            "API ERROR";
+
+        status.className="";
+
+
         document.getElementById(
-            "riskCircle"
+            "selectedText"
+        ).textContent =
+            "Unable to retrieve live data. Please try again.";
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE WEATHER
+========================================================= */
+
+function updateWeather(country,data){
+
+    const current =
+    data.current;
+
+
+    const daily =
+    data.daily;
+
+
+    /* Current values */
+
+    document.getElementById(
+        "currentRain"
+    ).textContent =
+        Number(
+            current.precipitation || 0
+        ).toFixed(1) + " mm";
+
+
+    document.getElementById(
+        "currentTemp"
+    ).textContent =
+        Number(
+            current.temperature_2m
+        ).toFixed(1) + " °C";
+
+
+    document.getElementById(
+        "currentHumidity"
+    ).textContent =
+        Number(
+            current.relative_humidity_2m
+        ).toFixed(0) + " %";
+
+
+    document.getElementById(
+        "currentWind"
+    ).textContent =
+        Number(
+            current.wind_speed_10m
+        ).toFixed(1) + " km/h";
+
+
+    /* Risk */
+
+    const score =
+        calculateRisk(
+            daily.rain_sum
         );
 
 
-    const riskLevel =
-        document.getElementById(
-            "riskLevel"
+    updateRisk(
+        country,
+        score
+    );
+
+
+    /* Chart */
+
+    createRainChart(
+        daily.time,
+        daily.rain_sum
+    );
+
+
+    /* Forecast */
+
+    createForecast(
+        daily
+    );
+
+
+    /* Map */
+
+    map.flyTo(
+        [country.lat,country.lon],
+        4,
+        {
+            duration:1.2
+        }
+    );
+
+
+    country.marker.openPopup();
+
+
+    document.getElementById(
+        "selectedCountry"
+    ).textContent =
+        country.flag + " " + country.name;
+
+
+    document.getElementById(
+        "selectedText"
+    ).textContent =
+        "Live weather data loaded successfully from Open-Meteo.";
+
+
+}
+
+
+/* =========================================================
+   RISK CALCULATION
+========================================================= */
+
+function calculateRisk(rain){
+
+    /*
+       Experimental rainfall-based model.
+
+       It uses accumulated forecast rainfall
+       as one simple indicator.
+
+       It is NOT an official flood forecast.
+    */
+
+
+    const total =
+    rain
+    .slice(0,3)
+    .reduce(
+        (sum,value)=>
+            sum + Number(value || 0),
+        0
+    );
+
+
+    /*
+       Approximate prototype scoring:
+
+       0 mm     -> 5
+       10 mm    -> 20
+       30 mm    -> 45
+       60 mm    -> 70
+       100+ mm  -> 95
+    */
+
+    let score =
+        Math.min(
+            95,
+            5 + (total * 0.9)
         );
 
 
-    const districtInfo =
-        document.getElementById(
-            "districtInfo"
-        );
+    return Math.round(score);
+
+}
 
 
-    const riskBar =
-        document.getElementById(
-            "riskBar"
-        );
+/* =========================================================
+   UPDATE RISK
+========================================================= */
 
-
-    districtName.textContent =
-        name;
-
-
-    riskCircle.textContent =
-        score + "%";
-
-
-    riskBar.style.width =
-        score + "%";
-
+function updateRisk(country,score){
 
     let level;
-
+    let color;
     let message;
 
-    let color;
 
-
-    /* HIGH RISK */
-
-    if(score >= 60){
+    if(score >= 70){
 
         level =
             "HIGH RISK";
@@ -2536,14 +1930,9 @@ function showDistrict(
             "#ef4444";
 
         message =
-            "The prototype identifies a higher " +
-            "risk score. Additional environmental " +
-            "data should be reviewed.";
+            "The prototype rainfall indicator shows a high level of accumulated precipitation. Real flood assessment would require river levels, terrain, soil moisture and other validated data.";
 
     }
-
-
-    /* MEDIUM RISK */
 
     else if(score >= 40){
 
@@ -2554,14 +1943,9 @@ function showDistrict(
             "#f59e0b";
 
         message =
-            "The prototype identifies a moderate " +
-            "risk score. Continued monitoring " +
-            "may be useful.";
+            "The prototype rainfall indicator shows moderate accumulated precipitation. Additional environmental data would be required for reliable flood-risk assessment.";
 
     }
-
-
-    /* LOW RISK */
 
     else{
 
@@ -2572,108 +1956,334 @@ function showDistrict(
             "#22c55e";
 
         message =
-            "The prototype identifies a lower " +
-            "risk score based on the demonstration model.";
+            "The prototype rainfall indicator currently shows lower accumulated precipitation. This does not mean flooding cannot occur.";
 
     }
 
 
-    riskLevel.textContent =
+    document.getElementById(
+        "riskCountry"
+    ).textContent =
+        country.flag + " " + country.name;
+
+
+    document.getElementById(
+        "riskCircle"
+    ).textContent =
+        score + "%";
+
+
+    document.getElementById(
+        "riskCircle"
+    ).style.borderColor =
+        color;
+
+
+    document.getElementById(
+        "riskLevel"
+    ).textContent =
         level;
 
 
-    riskLevel.style.color =
+    document.getElementById(
+        "riskLevel"
+    ).style.color =
         color;
 
 
-    riskCircle.style.borderColor =
-        color;
-
-
-    riskBar.style.background =
-        color;
-
-
-    districtInfo.textContent =
+    document.getElementById(
+        "riskInfo"
+    ).textContent =
         message;
+
+
+    document.getElementById(
+        "riskBar"
+    ).style.width =
+        score + "%";
+
+
+    document.getElementById(
+        "riskBar"
+    ).style.background =
+        color;
+
+
+    document.getElementById(
+        "riskScore"
+    ).textContent =
+        "Prototype risk score: " +
+        score + "%";
+
+
+    const selectedRisk =
+    document.getElementById(
+        "selectedRisk"
+    );
+
+
+    selectedRisk.textContent =
+        level;
+
+
+    selectedRisk.className =
+        "risk " +
+        (
+            score >= 70
+            ? "risk-high"
+            : score >= 40
+            ? "risk-medium"
+            : "risk-low"
+        );
 
 }
 
 
 /* =========================================================
-   DEMO RAINFALL
+   RAINFALL CHART
 ========================================================= */
 
-function updateDemoRainfall(){
+function createRainChart(
+    dates,
+    rainfall
+){
 
-    const rainfall =
-        Math.floor(
-            Math.random() * 30
-        ) + 25;
+    const ctx =
+    document.getElementById(
+        "rainChart"
+    ).getContext("2d");
+
+
+    if(rainChart){
+
+        rainChart.destroy();
+
+    }
+
+
+    const labels =
+    dates.map(
+        date =>
+            new Date(date)
+            .toLocaleDateString(
+                undefined,
+                {
+                    month:"short",
+                    day:"numeric"
+                }
+            )
+    );
+
+
+    rainChart =
+    new Chart(
+        ctx,
+        {
+
+            type:"line",
+
+            data:{
+
+                labels:labels,
+
+                datasets:[{
+
+                    label:
+                        "Rainfall (mm)",
+
+                    data:rainfall,
+
+                    borderWidth:3,
+
+                    tension:.35,
+
+                    fill:true
+
+                }]
+
+            },
+
+            options:{
+
+                responsive:true,
+
+                maintainAspectRatio:false,
+
+                plugins:{
+
+                    legend:{
+                        labels:{
+                            color:"#cbd5e1"
+                        }
+                    }
+
+                },
+
+                scales:{
+
+                    x:{
+
+                        ticks:{
+                            color:"#94a3b8"
+                        },
+
+                        grid:{
+                            color:"rgba(148,163,184,.1)"
+                        }
+
+                    },
+
+                    y:{
+
+                        beginAtZero:true,
+
+                        ticks:{
+                            color:"#94a3b8"
+                        },
+
+                        grid:{
+                            color:"rgba(148,163,184,.1)"
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+    );
 
 
     document.getElementById(
-        "rainfallValue"
+        "chartDescription"
     ).textContent =
-        rainfall + " mm";
+        "Daily rainfall for the next 7 days.";
+
+}
 
 
-    /* Demo overall risk */
+/* =========================================================
+   FORECAST
+========================================================= */
 
-    const overallRisk =
-        document.getElementById(
-            "overallRisk"
+function createForecast(daily){
+
+    const container =
+    document.getElementById(
+        "forecast"
+    );
+
+
+    container.innerHTML="";
+
+
+    for(
+        let i=0;
+        i<3;
+        i++
+    ){
+
+        const card =
+        document.createElement(
+            "div"
         );
 
 
-    if(rainfall >= 50){
+        card.className =
+            "forecast-card";
 
-        overallRisk.textContent =
-            "HIGH";
 
-        overallRisk.style.color =
-            "#ef4444";
+        const date =
+        new Date(
+            daily.time[i]
+        );
 
-    }
 
-    else if(rainfall >= 40){
+        const dateText =
+        date.toLocaleDateString(
+            undefined,
+            {
+                weekday:"long",
+                month:"short",
+                day:"numeric"
+            }
+        );
 
-        overallRisk.textContent =
-            "MEDIUM";
 
-        overallRisk.style.color =
-            "#f59e0b";
+        card.innerHTML = `
 
-    }
+            <h3>
+                ${dateText}
+            </h3>
 
-    else{
+            <div class="forecast-value">
+                🌧️
+                ${Number(
+                    daily.rain_sum[i] || 0
+                ).toFixed(1)} mm
+            </div>
 
-        overallRisk.textContent =
-            "LOW";
+            <p>
+                🌡️ Max:
+                ${Number(
+                    daily.temperature_2m_max[i]
+                ).toFixed(1)} °C
+            </p>
 
-        overallRisk.style.color =
-            "#22c55e";
+            <p>
+                🌡️ Min:
+                ${Number(
+                    daily.temperature_2m_min[i]
+                ).toFixed(1)} °C
+            </p>
+
+            <p>
+                🌧️ Rain probability:
+                ${Number(
+                    daily.precipitation_probability_max[i] || 0
+                )}%
+            </p>
+
+        `;
+
+
+        container.appendChild(card);
 
     }
 
 }
 
 
-/* First update */
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
 
-updateDemoRainfall();
+select.value =
+    countries.findIndex(
+        country =>
+            country.name === "Sri Lanka"
+    );
 
 
-/* Update every 10 seconds */
+loadWeather();
+
+
+/* =========================================================
+   AUTO REFRESH
+========================================================= */
+
+/*
+   Refresh every 15 minutes.
+*/
 
 setInterval(
-    updateDemoRainfall,
-    10000
+    loadWeather,
+    15 * 60 * 1000
 );
 
 </script>
 
 </body>
-
 </html>
 ```
