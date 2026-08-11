@@ -1,0 +1,2679 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>FloodGuard AI | Sri Lanka</title>
+
+
+<!-- Leaflet CSS -->
+
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+
+<style>
+
+/* =========================================================
+   FLOODGUARD AI
+   COMPLETE CSS
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:#020617;
+
+    color:white;
+
+    overflow-x:hidden;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    z-index:-10;
+
+    background:
+
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(14,165,233,.12),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 80% 60%,
+            rgba(99,102,241,.10),
+            transparent 30%
+        );
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+nav{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    z-index:9999;
+
+    padding:
+        17px 7%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:
+        rgba(2,6,23,.88);
+
+    backdrop-filter:
+        blur(15px);
+
+    border-bottom:
+        1px solid #1e293b;
+}
+
+.logo{
+
+    font-size:22px;
+
+    font-weight:800;
+
+    letter-spacing:.5px;
+}
+
+.logo span{
+
+    color:#38bdf8;
+}
+
+nav ul{
+
+    display:flex;
+
+    gap:25px;
+
+    list-style:none;
+}
+
+nav a{
+
+    color:#cbd5e1;
+
+    text-decoration:none;
+
+    font-size:14px;
+
+    transition:.3s;
+}
+
+nav a:hover{
+
+    color:#38bdf8;
+}
+
+
+.creator{
+    margin-top:12px;
+    font-size:18px;
+    color:#cbd5e1;
+}
+
+.creator span{
+    color:#38bdf8;
+    font-weight:800;
+    text-shadow:
+        0 0 15px rgba(56,189,248,.6);
+}
+
+.footer-sub{
+    margin-top:10px;
+}
+
+.disclaimer{
+    margin-top:18px;
+    font-size:12px;
+    color:#64748b;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    min-height:100vh;
+
+    padding:
+        150px 7% 80px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(14,165,233,.15),
+            transparent 42%
+        );
+}
+
+.hero-content{
+
+    max-width:950px;
+}
+
+.badge{
+
+    display:inline-block;
+
+    padding:
+        9px 18px;
+
+    border:
+        1px solid #38bdf8;
+
+    border-radius:50px;
+
+    color:#7dd3fc;
+
+    background:
+        rgba(56,189,248,.06);
+
+    font-size:12px;
+
+    margin-bottom:25px;
+}
+
+.hero h1{
+
+    font-size:
+        clamp(48px,8vw,90px);
+
+    line-height:
+        1;
+
+    margin-bottom:25px;
+}
+
+.gradient{
+
+    background:
+        linear-gradient(
+            90deg,
+            #38bdf8,
+            #818cf8,
+            #c084fc
+        );
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+}
+
+.hero p{
+
+    max-width:780px;
+
+    margin:auto;
+
+    color:#94a3b8;
+
+    font-size:18px;
+
+    line-height:1.8;
+}
+
+.hero-buttons{
+
+    margin-top:35px;
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+}
+
+.btn{
+
+    display:inline-block;
+
+    padding:
+        14px 23px;
+
+    border-radius:10px;
+
+    font-weight:bold;
+
+    text-decoration:none;
+
+    transition:.3s;
+}
+
+.btn:hover{
+
+    transform:
+        translateY(-4px);
+}
+
+.btn-primary{
+
+    background:#38bdf8;
+
+    color:#00111c;
+}
+
+.btn-secondary{
+
+    color:white;
+
+    border:
+        1px solid #334155;
+
+    background:
+        rgba(255,255,255,.03);
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+section{
+
+    padding:
+        100px 7%;
+}
+
+.section-title{
+
+    text-align:center;
+
+    margin-bottom:45px;
+}
+
+.section-title h2{
+
+    font-size:42px;
+
+    margin-bottom:12px;
+}
+
+.section-title p{
+
+    color:#94a3b8;
+
+    line-height:1.7;
+}
+
+
+/* =========================================================
+   DASHBOARD CARDS
+========================================================= */
+
+.dashboard{
+
+    max-width:1150px;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:20px;
+}
+
+.dashboard-card{
+
+    padding:30px;
+
+    border-radius:18px;
+
+    background:#0f172a;
+
+    border:
+        1px solid #1e293b;
+
+    transition:.3s;
+}
+
+.dashboard-card:hover{
+
+    transform:
+        translateY(-6px);
+
+    border-color:#38bdf8;
+}
+
+.dashboard-icon{
+
+    font-size:35px;
+
+    margin-bottom:15px;
+}
+
+.dashboard-card h3{
+
+    margin-bottom:8px;
+}
+
+.dashboard-card p{
+
+    color:#94a3b8;
+
+    line-height:1.6;
+}
+
+.dashboard-value{
+
+    margin-top:15px;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    color:#7dd3fc;
+}
+
+
+/* =========================================================
+   NASA STATUS
+========================================================= */
+
+.nasa-status{
+
+    max-width:1150px;
+
+    margin:
+        25px auto 0;
+
+    padding:
+        15px 20px;
+
+    text-align:center;
+
+    color:#7dd3fc;
+
+    background:#0f172a;
+
+    border:
+        1px solid #164e63;
+
+    border-radius:12px;
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+.map-wrapper{
+
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:12px;
+
+    background:#0f172a;
+
+    border:
+        1px solid #164e63;
+
+    border-radius:22px;
+
+    box-shadow:
+        0 0 50px
+        rgba(14,165,233,.08);
+}
+
+#map{
+
+    width:100%;
+
+    height:600px;
+
+    border-radius:15px;
+}
+
+
+/* =========================================================
+   MAP INFORMATION
+========================================================= */
+
+.map-info{
+
+    max-width:1200px;
+
+    margin:
+        20px auto;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+}
+
+.info-card{
+
+    padding:22px;
+
+    border-radius:15px;
+
+    background:#0f172a;
+
+    border:
+        1px solid #1e293b;
+}
+
+.info-card h3{
+
+    color:#7dd3fc;
+
+    margin-bottom:8px;
+}
+
+.info-card p{
+
+    color:#94a3b8;
+}
+
+.info-card strong{
+
+    display:block;
+
+    margin-top:10px;
+
+    font-size:23px;
+}
+
+
+/* =========================================================
+   NASA WORLDVIEW
+========================================================= */
+
+.nasa-panel{
+
+    max-width:1000px;
+
+    margin:
+        45px auto 0;
+
+    padding:30px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(14,165,233,.12),
+            rgba(99,102,241,.08)
+        );
+
+    border:
+        1px solid
+        rgba(56,189,248,.35);
+}
+
+.nasa-icon{
+
+    width:80px;
+
+    height:80px;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:42px;
+
+    border-radius:20px;
+
+    background:
+        rgba(56,189,248,.12);
+
+    border:
+        1px solid
+        rgba(56,189,248,.3);
+}
+
+.nasa-content{
+
+    flex:1;
+}
+
+.nasa-content h2{
+
+    font-size:28px;
+
+    margin-bottom:8px;
+}
+
+.nasa-content p{
+
+    color:#94a3b8;
+
+    line-height:1.6;
+
+    margin-bottom:18px;
+}
+
+.nasa-button{
+
+    display:inline-block;
+
+    padding:
+        13px 22px;
+
+    border-radius:10px;
+
+    background:#38bdf8;
+
+    color:#00111c;
+
+    font-weight:bold;
+
+    transition:.3s;
+}
+
+.nasa-button:hover{
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 10px 30px
+        rgba(56,189,248,.3);
+}
+
+
+/* =========================================================
+   FLOOD LEGEND
+========================================================= */
+
+.flood-legend{
+
+    padding:15px;
+
+    border-radius:12px;
+
+    background:
+        rgba(2,8,23,.94);
+
+    border:
+        1px solid #334155;
+
+    color:white;
+
+    line-height:2;
+
+    box-shadow:
+        0 5px 25px
+        rgba(0,0,0,.4);
+}
+
+.flood-legend h4{
+
+    color:#7dd3fc;
+
+    margin-bottom:5px;
+}
+
+.flood-legend span{
+
+    display:inline-block;
+
+    width:13px;
+
+    height:13px;
+
+    margin-right:7px;
+
+    border-radius:3px;
+}
+
+.legend-water{
+
+    background:#32d2f2;
+}
+
+.legend-recurring{
+
+    background:#ffff00;
+}
+
+.legend-flood{
+
+    background:#fa1e24;
+}
+
+
+/* =========================================================
+   DISTRICT SYSTEM
+========================================================= */
+
+.district-layout{
+
+    max-width:1150px;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1.2fr;
+
+    gap:25px;
+}
+
+.district-list{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+
+    max-height:520px;
+
+    overflow-y:auto;
+
+    padding:5px;
+}
+
+.district-btn{
+
+    padding:14px;
+
+    border-radius:10px;
+
+    border:
+        1px solid #1e293b;
+
+    background:#0f172a;
+
+    color:#cbd5e1;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    transition:.25s;
+}
+
+.district-btn:hover{
+
+    color:#7dd3fc;
+
+    border-color:#38bdf8;
+
+    transform:
+        translateY(-2px);
+}
+
+.district-btn.active{
+
+    color:#7dd3fc;
+
+    border-color:#38bdf8;
+
+    background:
+        rgba(56,189,248,.10);
+}
+
+
+/* =========================================================
+   RISK PANEL
+========================================================= */
+
+.district-panel{
+
+    min-height:520px;
+
+    padding:40px;
+
+    border-radius:22px;
+
+    text-align:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0f172a,
+            #082f49
+        );
+
+    border:
+        1px solid #164e63;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+.selected-icon{
+
+    font-size:50px;
+
+    margin-bottom:12px;
+}
+
+#districtName{
+
+    font-size:34px;
+
+    margin-bottom:20px;
+}
+
+.risk-circle{
+
+    width:135px;
+
+    height:135px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#020617;
+
+    border:
+        8px solid #22c55e;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    margin-bottom:18px;
+
+    transition:.5s;
+}
+
+#riskLevel{
+
+    font-size:25px;
+
+    margin-bottom:15px;
+}
+
+#districtInfo{
+
+    max-width:520px;
+
+    color:#94a3b8;
+
+    line-height:1.7;
+
+    margin-bottom:25px;
+}
+
+.risk-bar{
+
+    width:100%;
+
+    max-width:500px;
+
+    height:12px;
+
+    background:#1e293b;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+#riskBar{
+
+    display:block;
+
+    width:0%;
+
+    height:100%;
+
+    background:#22c55e;
+
+    border-radius:20px;
+
+    transition:1s;
+}
+
+.data-note{
+
+    margin-top:20px;
+
+    color:#64748b;
+
+    font-size:12px;
+}
+
+
+/* =========================================================
+   TECHNOLOGY
+========================================================= */
+
+.features{
+
+    max-width:1150px;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:20px;
+}
+
+.feature-card{
+
+    padding:30px;
+
+    border-radius:18px;
+
+    background:#0f172a;
+
+    border:
+        1px solid #1e293b;
+}
+
+.feature-card h3{
+
+    color:#38bdf8;
+
+    margin-bottom:12px;
+}
+
+.feature-card p{
+
+    color:#94a3b8;
+
+    line-height:1.8;
+}
+
+
+/* =========================================================
+   IMPACT
+========================================================= */
+
+.impact-grid{
+
+    max-width:1150px;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:20px;
+}
+
+.impact-card{
+
+    padding:30px;
+
+    text-align:center;
+
+    border-radius:18px;
+
+    background:#0f172a;
+
+    border:
+        1px solid #1e293b;
+}
+
+.impact-icon{
+
+    font-size:40px;
+
+    margin-bottom:15px;
+}
+
+.impact-card p{
+
+    margin-top:10px;
+
+    color:#94a3b8;
+
+    line-height:1.7;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+
+    padding:
+        55px 7%;
+
+    text-align:center;
+
+    border-top:
+        1px solid #1e293b;
+
+    color:#64748b;
+}
+
+footer strong{
+
+    color:#38bdf8;
+
+    font-size:20px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:850px){
+
+    nav ul{
+
+        display:none;
+    }
+
+    section{
+
+        padding:
+            80px 5%;
+    }
+
+    .dashboard,
+    .map-info,
+    .features,
+    .impact-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .district-layout{
+
+        grid-template-columns:1fr;
+    }
+
+    .district-list{
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .nasa-panel{
+
+        flex-direction:column;
+
+        text-align:center;
+    }
+
+    #map{
+
+        height:450px;
+    }
+
+}
+
+@media(max-width:500px){
+
+    .district-list{
+
+        grid-template-columns:1fr;
+    }
+
+    .hero h1{
+
+        font-size:48px;
+    }
+
+    .section-title h2{
+
+        font-size:32px;
+    }
+
+}
+/* =====================================================
+   SPACE + EARTH BACKGROUND
+===================================================== */
+
+body{
+    background:
+        linear-gradient(
+            rgba(2,6,23,.72),
+            rgba(2,6,23,.88)
+        ),
+        url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=2400&q=85");
+
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+}
+
+
+/* Moving blue atmospheric glow */
+
+body::after{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    z-index:-2;
+
+    background:
+
+        radial-gradient(
+            circle at 50% 110%,
+            rgba(14,165,233,.35),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(56,189,248,.10),
+            transparent 30%
+        );
+
+    animation:
+        atmosphere 8s ease-in-out infinite alternate;
+}
+
+
+@keyframes atmosphere{
+
+    from{
+        opacity:.65;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+
+
+/* =====================================================
+   HERO EARTH GLOW
+===================================================== */
+
+.hero{
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            rgba(2,6,23,.30),
+            rgba(2,6,23,.65)
+        );
+}
+
+
+/* Big Earth-like glow */
+
+.hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:650px;
+
+    height:650px;
+
+    right:-250px;
+
+    bottom:-350px;
+
+    border-radius:50%;
+
+    background:
+
+        radial-gradient(
+            circle at 35% 30%,
+            #38bdf8 0%,
+            #0369a1 18%,
+            #082f49 45%,
+            #020617 70%
+        );
+
+    box-shadow:
+
+        0 -10px 100px
+        rgba(56,189,248,.45);
+
+    opacity:.75;
+
+    z-index:0;
+}
+
+
+.hero-content{
+
+    position:relative;
+
+    z-index:2;
+}
+
+
+/* =====================================================
+   GLASS EFFECT
+===================================================== */
+
+.dashboard-card,
+.info-card,
+.feature-card,
+.impact-card,
+.district-panel,
+.nasa-panel,
+.nasa-status{
+
+    background:
+        rgba(15,23,42,.62);
+
+    backdrop-filter:
+        blur(14px);
+
+    -webkit-backdrop-filter:
+        blur(14px);
+
+}
+
+
+/* =====================================================
+   SPACE PARTICLES
+===================================================== */
+
+.space-particles{
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    z-index:-1;
+
+    background-image:
+
+        radial-gradient(
+            2px 2px at 10% 20%,
+            white,
+            transparent
+        ),
+
+        radial-gradient(
+            1px 1px at 30% 70%,
+            white,
+            transparent
+        ),
+
+        radial-gradient(
+            2px 2px at 55% 30%,
+            #7dd3fc,
+            transparent
+        ),
+
+        radial-gradient(
+            1px 1px at 80% 15%,
+            white,
+            transparent
+        ),
+
+        radial-gradient(
+            2px 2px at 90% 70%,
+            #38bdf8,
+            transparent
+        ),
+
+        radial-gradient(
+            1px 1px at 65% 85%,
+            white,
+            transparent
+        );
+
+    background-size:
+        700px 500px;
+
+    animation:
+        particles 35s linear infinite;
+}
+
+
+@keyframes particles{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(300px);
+    }
+
+}
+
+
+/* =====================================================
+   NASA BADGE GLOW
+===================================================== */
+
+.badge{
+
+    box-shadow:
+        0 0 25px
+        rgba(56,189,248,.12);
+}
+
+
+/* =====================================================
+   BUTTON GLOW
+===================================================== */
+
+.btn-primary{
+
+    box-shadow:
+        0 0 25px
+        rgba(56,189,248,.20);
+}
+
+
+/* =====================================================
+   SECTION SEPARATION
+===================================================== */
+
+section{
+
+    position:relative;
+}
+
+
+section::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:10%;
+
+    right:10%;
+
+    bottom:0;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(56,189,248,.25),
+            transparent
+        );
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="space-particles"></div>
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav>
+
+    <div class="logo">
+
+        🚀
+        <span>FloodGuard</span>
+        AI
+
+    </div>
+
+
+    <ul>
+
+        <li>
+            <a href="#home">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a href="#dashboard">
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="#satellite">
+                Satellite
+            </a>
+        </li>
+
+        <li>
+            <a href="#districts">
+                Districts
+            </a>
+        </li>
+
+        <li>
+            <a href="#technology">
+                Technology
+            </a>
+        </li>
+
+    </ul>
+
+</nav>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section
+    class="hero"
+    id="home"
+>
+
+    <div class="hero-content">
+
+        <div class="badge">
+
+            NASA EARTH OBSERVATION
+            •
+            AI
+            •
+            CLIMATE
+
+        </div>
+
+
+        <h1>
+
+            Protecting Sri Lanka
+
+            <br>
+
+            with
+
+            <span class="gradient">
+                Earth Data
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            FloodGuard AI is a student-built prototype
+            exploring how Earth observation data,
+            environmental information and artificial
+            intelligence can support flood-risk awareness.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a
+                href="#dashboard"
+                class="btn btn-primary"
+            >
+
+                Explore Dashboard
+
+            </a>
+
+
+            <a
+                href="#satellite"
+                class="btn btn-secondary"
+            >
+
+                🛰️ Satellite Data
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section
+    id="dashboard"
+>
+
+    <div class="section-title">
+
+        <h2>
+            🌍 Earth Monitoring Dashboard
+        </h2>
+
+        <p>
+            Prototype environmental monitoring interface
+        </p>
+
+    </div>
+
+
+    <div class="dashboard">
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🌧️
+            </div>
+
+            <h3>
+                Rainfall
+            </h3>
+
+            <p>
+                Demonstration rainfall indicator
+            </p>
+
+            <div
+                class="dashboard-value"
+                id="rainfallValue"
+            >
+                42 mm
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🌊
+            </div>
+
+            <h3>
+                Flood Risk
+            </h3>
+
+            <p>
+                Prototype overall risk level
+            </p>
+
+            <div
+                class="dashboard-value"
+                id="overallRisk"
+            >
+                LOW
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🛰️
+            </div>
+
+            <h3>
+                NASA Earth Data
+            </h3>
+
+            <p>
+                Earth observation map layer
+            </p>
+
+            <div class="dashboard-value">
+                READY
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="nasa-status"
+        id="nasaStatus"
+    >
+
+        🛰️ NASA Earth Data map ready
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SATELLITE MAP
+===================================================== -->
+
+<section
+    id="satellite"
+>
+
+    <div class="section-title">
+
+        <h2>
+            🛰️ NASA Satellite View
+        </h2>
+
+        <p>
+            Sri Lanka Earth observation visualization
+        </p>
+
+    </div>
+
+
+    <div class="map-wrapper">
+
+        <div id="map"></div>
+
+    </div>
+
+
+    <div class="map-info">
+
+
+        <div class="info-card">
+
+            <h3>
+                Location
+            </h3>
+
+            <p>
+                Sri Lanka
+            </p>
+
+            <strong>
+                🇱🇰
+            </strong>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h3>
+                Satellite Layer
+            </h3>
+
+            <p>
+                NASA GIBS
+            </p>
+
+            <strong>
+                🛰️ ACTIVE
+            </strong>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h3>
+                Monitoring
+            </h3>
+
+            <p>
+                Earth environment
+            </p>
+
+            <strong>
+                🌍
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- NASA WORLDVIEW -->
+
+    <div class="nasa-panel">
+
+        <div class="nasa-icon">
+            🛰️
+        </div>
+
+
+        <div class="nasa-content">
+
+            <h2>
+                NASA Earth Observation
+            </h2>
+
+            <p>
+
+                Explore satellite imagery and Earth
+                observation data using NASA Worldview.
+
+            </p>
+
+
+            <a
+                href="https://worldview.earthdata.nasa.gov/?v=58.23938102453384,-27.587229055289363,234.17039100219927,84.94676658472122&t=2026-08-11-T05%3A10%3A35Z"
+                target="_blank"
+                class="nasa-button"
+            >
+
+                🛰️ Open NASA Worldview
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DISTRICTS
+===================================================== -->
+
+<section
+    id="districts"
+>
+
+    <div class="section-title">
+
+        <h2>
+            🇱🇰 Sri Lanka Flood Risk Monitor
+        </h2>
+
+        <p>
+
+            Select a district to explore
+            the prototype risk assessment.
+
+        </p>
+
+    </div>
+
+
+    <div class="district-layout">
+
+
+        <div
+            class="district-list"
+            id="districtList"
+        ></div>
+
+
+        <div class="district-panel">
+
+            <div class="selected-icon">
+                🌍
+            </div>
+
+
+            <h2 id="districtName">
+
+                Select a District
+
+            </h2>
+
+
+            <div
+                class="risk-circle"
+                id="riskCircle"
+            >
+
+                --
+
+            </div>
+
+
+            <h3 id="riskLevel">
+
+                Waiting for selection
+
+            </h3>
+
+
+            <p id="districtInfo">
+
+                Select a district from the list
+                to view its prototype flood-risk
+                assessment.
+
+            </p>
+
+
+            <div class="risk-bar">
+
+                <span
+                    id="riskBar"
+                ></span>
+
+            </div>
+
+
+            <p class="data-note">
+
+                Prototype assessment —
+                not an official emergency warning.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TECHNOLOGY
+===================================================== -->
+
+<section
+    id="technology"
+>
+
+    <div class="section-title">
+
+        <h2>
+            🤖 How FloodGuard AI Works
+        </h2>
+
+        <p>
+            From Earth observation to community awareness
+        </p>
+
+    </div>
+
+
+    <div class="features">
+
+
+        <div class="feature-card">
+
+            <h3>
+                01 — NASA Earth Observation
+            </h3>
+
+            <p>
+
+                Earth observation imagery can help
+                visualize environmental conditions,
+                water and land changes.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <h3>
+                02 — Environmental Data
+            </h3>
+
+            <p>
+
+                Rainfall, water and weather information
+                can be combined to identify areas
+                requiring further attention.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <h3>
+                03 — AI Risk Model
+            </h3>
+
+            <p>
+
+                A future machine-learning model could
+                combine multiple environmental variables
+                to calculate a risk score.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <h3>
+                04 — Community Awareness
+            </h3>
+
+            <p>
+
+                The system could present complex
+                environmental information in a simple
+                format for communities.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     IMPACT
+===================================================== -->
+
+<section>
+
+    <div class="section-title">
+
+        <h2>
+            🌎 Project Impact
+        </h2>
+
+        <p>
+            Technology for people and the planet
+        </p>
+
+    </div>
+
+
+    <div class="impact-grid">
+
+
+        <div class="impact-card">
+
+            <div class="impact-icon">
+                👨‍👩‍👧‍👦
+            </div>
+
+            <h3>
+                People
+            </h3>
+
+            <p>
+
+                Make environmental information
+                easier to understand.
+
+            </p>
+
+        </div>
+
+
+        <div class="impact-card">
+
+            <div class="impact-icon">
+                🌍
+            </div>
+
+            <h3>
+                Planet
+            </h3>
+
+            <p>
+
+                Use Earth observation technology
+                to understand our planet.
+
+            </p>
+
+        </div>
+
+
+        <div class="impact-card">
+
+            <div class="impact-icon">
+                🤖
+            </div>
+
+            <h3>
+                Innovation
+            </h3>
+
+            <p>
+
+                Combine AI, Earth science and
+                web technology.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <p>
+
+        <strong>
+            FloodGuard AI
+        </strong>
+
+    </p>
+
+
+    <p style="margin-top:10px;">
+
+        Student Innovation Project
+        •
+        Earth
+        •
+        AI
+        •
+        Climate
+
+    </p>
+
+
+    <p
+        style="
+            margin-top:20px;
+            font-size:13px;
+        "
+    >
+
+        Prototype only —
+        not an official NASA product
+        or emergency warning system.
+
+    </p>
+
+</footer>
+
+<footer>
+
+    <p>
+        <strong>FloodGuard AI</strong>
+    </p>
+
+    <p class="creator">
+        Created by <span>ANUHAS INEESHA</span>
+    </p>
+
+    <p class="footer-sub">
+        Student Innovation Project • Earth • AI • Climate
+    </p>
+
+    <p class="disclaimer">
+        Prototype only — not an official NASA product
+        or emergency warning system.
+    </p>
+
+</footer>
+
+
+<!-- =====================================================
+     LEAFLET JS
+===================================================== -->
+
+<script
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<script>
+
+/* =========================================================
+   NASA MAP
+========================================================= */
+
+
+/* Sri Lanka center */
+
+const sriLanka = [
+    7.8731,
+    80.7718
+];
+
+
+/* Create map */
+
+const map =
+    L.map("map")
+     .setView(
+         sriLanka,
+         7
+     );
+
+
+/* OpenStreetMap */
+
+const osm =
+    L.tileLayer(
+
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+
+        {
+
+            attribution:
+                "© OpenStreetMap contributors",
+
+            opacity:
+                0.35
+
+        }
+
+    )
+    .addTo(map);
+
+
+/* Current date */
+
+const today =
+    new Date()
+        .toISOString()
+        .slice(0,10);
+
+
+/* NASA satellite layer */
+
+const nasaSatellite =
+    L.tileLayer(
+
+        "https://gibs.earthdata.nasa.gov/" +
+        "wmts/epsg3857/best/" +
+        "MODIS_Aqua_CorrectedReflectance_TrueColor/" +
+        "default/{time}/" +
+        "GoogleMapsCompatible_Level9/" +
+        "{z}/{y}/{x}.jpg",
+
+        {
+
+            time:
+                today,
+
+            attribution:
+                "NASA GIBS / NASA Earth Science Data",
+
+            maxZoom:
+                9
+
+        }
+
+    );
+
+
+/* NASA flood layer */
+
+const nasaFlood =
+    L.tileLayer(
+
+        "https://gibs.earthdata.nasa.gov/" +
+        "wmts/epsg3857/best/" +
+        "MODIS_NRT_Global_Flood_2Day/" +
+        "default/{time}/" +
+        "GoogleMapsCompatible_Level8/" +
+        "{z}/{y}/{x}.png",
+
+        {
+
+            time:
+                today,
+
+            attribution:
+                "NASA GIBS / NASA Earth Science Data",
+
+            maxZoom:
+                8,
+
+            opacity:
+                0.75
+
+        }
+
+    );
+
+
+/* Sri Lanka marker */
+
+L.marker(sriLanka)
+
+    .addTo(map)
+
+    .bindPopup(
+
+        "<b>🇱🇰 Sri Lanka</b><br>" +
+
+        "FloodGuard AI monitoring area."
+
+    );
+
+
+/* Layer controls */
+
+const baseLayers = {
+
+    "🗺️ Reference Map":
+        osm,
+
+    "🛰️ NASA Satellite":
+        nasaSatellite
+
+};
+
+
+const overlays = {
+
+    "🌊 NASA Flood Layer":
+        nasaFlood
+
+};
+
+
+L.control.layers(
+    baseLayers,
+    overlays
+).addTo(map);
+
+
+/* =========================================================
+   FLOOD LEGEND
+========================================================= */
+
+const legend =
+    L.control({
+
+        position:
+            "bottomright"
+
+    });
+
+
+legend.onAdd =
+function(){
+
+    const div =
+        L.DomUtil.create(
+            "div",
+            "flood-legend"
+        );
+
+
+    div.innerHTML = `
+
+        <h4>
+            NASA Flood Data
+        </h4>
+
+        <div>
+
+            <span
+                class="legend-water">
+            </span>
+
+            Surface Water
+
+        </div>
+
+
+        <div>
+
+            <span
+                class="legend-recurring">
+            </span>
+
+            Recurring Flood
+
+        </div>
+
+
+        <div>
+
+            <span
+                class="legend-flood">
+            </span>
+
+            Flood
+
+        </div>
+
+    `;
+
+
+    return div;
+
+};
+
+
+legend.addTo(map);
+
+
+/* Status */
+
+document.getElementById(
+    "nasaStatus"
+).textContent =
+    "🛰️ NASA Earth observation map ready";
+
+
+/* =========================================================
+   DISTRICT DATA
+========================================================= */
+
+
+/*
+   DEMO VALUES ONLY.
+
+   These values are NOT actual NASA
+   flood predictions.
+*/
+
+const districts = [
+
+    ["Colombo",22],
+    ["Gampaha",35],
+    ["Kalutara",42],
+
+    ["Kandy",31],
+    ["Matale",28],
+    ["Nuwara Eliya",24],
+
+    ["Galle",46],
+    ["Matara",51],
+    ["Hambantota",29],
+
+    ["Jaffna",18],
+    ["Kilinochchi",25],
+    ["Mannar",20],
+    ["Mullaitivu",27],
+    ["Vavuniya",23],
+
+    ["Batticaloa",48],
+    ["Ampara",39],
+    ["Trincomalee",34],
+
+    ["Kurunegala",37],
+    ["Puttalam",44],
+
+    ["Anuradhapura",26],
+    ["Polonnaruwa",33],
+
+    ["Badulla",30],
+    ["Monaragala",21],
+
+    ["Ratnapura",62],
+    ["Kegalle",57]
+
+];
+
+
+/* District list */
+
+const districtList =
+    document.getElementById(
+        "districtList"
+    );
+
+
+/* Generate district buttons */
+
+districts.forEach(
+function(district){
+
+    const button =
+        document.createElement(
+            "button"
+        );
+
+
+    button.className =
+        "district-btn";
+
+
+    button.textContent =
+        "🇱🇰 " +
+        district[0];
+
+
+    button.onclick =
+        function(){
+
+            showDistrict(
+                district[0],
+                district[1],
+                button
+            );
+
+        };
+
+
+    districtList.appendChild(
+        button
+    );
+
+});
+
+
+/* =========================================================
+   DISTRICT RISK
+========================================================= */
+
+function showDistrict(
+    name,
+    score,
+    button
+){
+
+    /* Remove old active buttons */
+
+    document
+        .querySelectorAll(
+            ".district-btn"
+        )
+        .forEach(
+            function(item){
+
+                item.classList
+                    .remove("active");
+
+            }
+        );
+
+
+    button
+        .classList
+        .add("active");
+
+
+    const districtName =
+        document.getElementById(
+            "districtName"
+        );
+
+
+    const riskCircle =
+        document.getElementById(
+            "riskCircle"
+        );
+
+
+    const riskLevel =
+        document.getElementById(
+            "riskLevel"
+        );
+
+
+    const districtInfo =
+        document.getElementById(
+            "districtInfo"
+        );
+
+
+    const riskBar =
+        document.getElementById(
+            "riskBar"
+        );
+
+
+    districtName.textContent =
+        name;
+
+
+    riskCircle.textContent =
+        score + "%";
+
+
+    riskBar.style.width =
+        score + "%";
+
+
+    let level;
+
+    let message;
+
+    let color;
+
+
+    /* HIGH RISK */
+
+    if(score >= 60){
+
+        level =
+            "HIGH RISK";
+
+        color =
+            "#ef4444";
+
+        message =
+            "The prototype identifies a higher " +
+            "risk score. Additional environmental " +
+            "data should be reviewed.";
+
+    }
+
+
+    /* MEDIUM RISK */
+
+    else if(score >= 40){
+
+        level =
+            "MEDIUM RISK";
+
+        color =
+            "#f59e0b";
+
+        message =
+            "The prototype identifies a moderate " +
+            "risk score. Continued monitoring " +
+            "may be useful.";
+
+    }
+
+
+    /* LOW RISK */
+
+    else{
+
+        level =
+            "LOW RISK";
+
+        color =
+            "#22c55e";
+
+        message =
+            "The prototype identifies a lower " +
+            "risk score based on the demonstration model.";
+
+    }
+
+
+    riskLevel.textContent =
+        level;
+
+
+    riskLevel.style.color =
+        color;
+
+
+    riskCircle.style.borderColor =
+        color;
+
+
+    riskBar.style.background =
+        color;
+
+
+    districtInfo.textContent =
+        message;
+
+}
+
+
+/* =========================================================
+   DEMO RAINFALL
+========================================================= */
+
+function updateDemoRainfall(){
+
+    const rainfall =
+        Math.floor(
+            Math.random() * 30
+        ) + 25;
+
+
+    document.getElementById(
+        "rainfallValue"
+    ).textContent =
+        rainfall + " mm";
+
+
+    /* Demo overall risk */
+
+    const overallRisk =
+        document.getElementById(
+            "overallRisk"
+        );
+
+
+    if(rainfall >= 50){
+
+        overallRisk.textContent =
+            "HIGH";
+
+        overallRisk.style.color =
+            "#ef4444";
+
+    }
+
+    else if(rainfall >= 40){
+
+        overallRisk.textContent =
+            "MEDIUM";
+
+        overallRisk.style.color =
+            "#f59e0b";
+
+    }
+
+    else{
+
+        overallRisk.textContent =
+            "LOW";
+
+        overallRisk.style.color =
+            "#22c55e";
+
+    }
+
+}
+
+
+/* First update */
+
+updateDemoRainfall();
+
+
+/* Update every 10 seconds */
+
+setInterval(
+    updateDemoRainfall,
+    10000
+);
+
+</script>
+
+</body>
+
+</html>
+```
